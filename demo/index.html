@@ -4,11 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skattklart — demo</title>
-<meta http-equiv="refresh" content="0;url=https://countries-hopes-put-soa.trycloudflare.com/demo-login">
-<style>body{font-family:system-ui;background:#1a2744;color:#fff;display:flex;align-items:center;
-justify-content:center;height:100vh;margin:0}</style>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+         background:#1a2744; color:#fff; display:flex; flex-direction:column;
+         align-items:center; justify-content:center; min-height:100vh;
+         padding:24px; text-align:center; }
+  .logo { font-size:28px; font-weight:800; letter-spacing:-1px; margin-bottom:24px; }
+  .logo span { color:#f0b429; }
+  p { color:rgba(255,255,255,.65); margin-bottom:26px; font-size:15px; }
+  .btn { display:inline-block; background:#f0b429; color:#1a2744; font-weight:800;
+         font-size:17px; padding:16px 36px; border-radius:9px; text-decoration:none; }
+  .hint { margin-top:18px; font-size:12px; color:rgba(255,255,255,.4); max-width:340px; line-height:1.6; }
+</style>
 </head>
-<body><p>Öppnar demot ...</p>
-<script>location.replace('https://countries-hopes-put-soa.trycloudflare.com/demo-login');</script>
+<body>
+  <div class="logo">Skatt<span>klart</span></div>
+  <p>Demot öppnas automatiskt — annars tryck på knappen.</p>
+  <a class="btn" id="go" href="https://countries-hopes-put-soa.trycloudflare.com/demo-login">
+    Öppna demot →</a>
+  <div class="hint">Du får ett eget testkonto med färdiga exempel — inget att registrera,
+    ingenting sparas kopplat till dig.</div>
+  <script>
+    setTimeout(function () {
+      window.location.href = document.getElementById('go').href;
+    }, 1200);
+  </script>
 </body>
 </html>
