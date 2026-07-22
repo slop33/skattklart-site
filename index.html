@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skattklart — lanseras snart</title>
+<meta name="description" content="Skattklart gör deklarationen enkel. Fota kvitton, få allt sammanställt, signera själv med BankID.">
+<style>
+  :root { --navy:#1a2744; --gold:#f0b429; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { overflow-x:hidden; height:100%; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+         background:linear-gradient(160deg,#1a2744 0%,#243460 55%,#1a2744 100%);
+         color:#fff; display:flex; flex-direction:column; align-items:center;
+         justify-content:center; min-height:100%; padding:24px; text-align:center; }
+  .logo { font-size:34px; font-weight:800; letter-spacing:-1px; margin-bottom:10px; }
+  .logo span { color:var(--gold); }
+  .badge { display:inline-block; background:rgba(240,180,41,.15); color:var(--gold);
+           font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+           padding:6px 16px; border-radius:20px; margin-bottom:26px; }
+  h1 { font-size:clamp(26px,5vw,44px); line-height:1.2; max-width:640px; margin-bottom:16px; }
+  p.sub { color:rgba(255,255,255,.65); font-size:17px; max-width:520px; line-height:1.65;
+          margin-bottom:34px; }
+  .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:800;
+         font-size:16px; padding:15px 32px; border-radius:9px; text-decoration:none; }
+  .btn:hover { background:#e09a10; }
+  .hint { margin-top:16px; font-size:13px; color:rgba(255,255,255,.45); }
+  footer { position:fixed; bottom:18px; left:0; right:0; font-size:12px;
+           color:rgba(255,255,255,.35); text-align:center; padding:0 16px; }
+</style>
+</head>
+<body>
+  <div class="logo">Skatt<span>klart</span></div>
+  <div class="badge">Under uppbyggnad</div>
+  <h1>Deklarationen, klar att signera.<br>Utan att du behöver kunna skatt.</h1>
+  <p class="sub">Fota dina kvitton, svara på några enkla frågor — Skattklart sammanställer
+     allt, granskar i tre oberoende steg och gör deklarationen klar. Du signerar alltid
+     själv med BankID hos Skatteverket.</p>
+  <a class="btn" href="/demo/">Prova demot →</a>
+  <div class="hint">Gratis att testa · inget konto behövs</div>
+  <footer>© 2026 Skattklart · hej@skattklart.se</footer>
+</body>
+</html>
