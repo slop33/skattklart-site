@@ -32,8 +32,10 @@
   a { color:var(--gold2); }
   nav { background:var(--navy); height:60px; display:flex; align-items:center;
         justify-content:space-between; padding:0 24px; }
-  .logo { color:#fff; font-weight:800; font-size:20px; letter-spacing:-1px; text-decoration:none; }
-  .logo span { color:var(--gold); }
+  .logo { display:inline-flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-mark { width:28px; height:28px; background:var(--gold); color:var(--navy); border-radius:7px;
+               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; }
+  .logo-word { color:#fff; font-weight:800; font-size:19px; letter-spacing:-.5px; }
   .nav-cta { background:var(--gold); color:var(--navy); font-weight:700; font-size:13px;
              padding:9px 18px; border-radius:7px; text-decoration:none; }
 
@@ -89,7 +91,7 @@
 <body>
 
 <nav>
-  <a class="logo" href="/">Skatt<span>klart</span></a>
+  <a class="logo" href="/"><span class="logo-mark">S</span><span class="logo-word">Skattklart</span></a>
   <a class="nav-cta" href="/demo/">Prova demot →</a>
 </nav>
 

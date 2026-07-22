@@ -13,8 +13,10 @@
          background:linear-gradient(160deg,#1a2744 0%,#243460 55%,#1a2744 100%);
          color:#fff; display:flex; flex-direction:column; align-items:center;
          justify-content:center; min-height:100%; padding:24px; text-align:center; }
-  .logo { font-size:34px; font-weight:800; letter-spacing:-1px; margin-bottom:10px; }
-  .logo span { color:var(--gold); }
+  .logo { display:inline-flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .logo-mark { width:42px; height:42px; background:var(--gold); color:var(--navy); border-radius:10px;
+               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:24px; }
+  .logo-word { font-size:32px; font-weight:800; letter-spacing:-.5px; color:#fff; }
   .badge { display:inline-block; background:rgba(240,180,41,.15); color:var(--gold);
            font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
            padding:6px 16px; border-radius:20px; margin-bottom:26px; }
@@ -30,7 +32,7 @@
 </style>
 </head>
 <body>
-  <div class="logo">Skatt<span>klart</span></div>
+  <div class="logo"><span class="logo-mark">S</span><span class="logo-word">Skattklart</span></div>
   <div class="badge">Under uppbyggnad</div>
   <h1>Deklarationen, klar att signera.<br>Utan att du behöver kunna skatt.</h1>
   <p class="sub">Fota dina kvitton, svara på några enkla frågor — Skattklart sammanställer
