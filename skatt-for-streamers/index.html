@@ -84,6 +84,12 @@
   .related { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 0; }
   .related a { font-size:14px; background:#f6f8fc; border:1px solid var(--line); border-radius:8px;
                padding:8px 14px; text-decoration:none; color:var(--navy); }
+  .platformbar { max-width:720px; margin:0 auto; padding:18px 24px 0; display:flex; flex-wrap:wrap;
+                 align-items:center; gap:8px 10px; }
+  .platformbar .pb-label { font-size:13px; color:var(--ink2); font-weight:600; margin-right:2px; }
+  .platformbar a { font-size:14px; font-weight:600; text-decoration:none; color:var(--navy);
+                   background:#f6f8fc; border:1px solid var(--line); border-radius:20px; padding:6px 14px; }
+  .platformbar a.active { background:var(--navy); color:#fff; border-color:var(--navy); }
 
   footer { border-top:1px solid var(--line); padding:32px 24px; text-align:center;
            color:#99a; font-size:13px; }
@@ -105,6 +111,13 @@
      Här är allt förklarat på vanlig svenska — utan krångel.</p>
   <a class="btn" href="/demo/">Se hur Skattklart hjälper dig →</a>
 </header>
+
+<div class="platformbar">
+  <span class="pb-label">Välj din plattform:</span>
+  <a href="/skatt-for-streamers/" class="active">🎮 Twitch</a>
+  <a href="/skatt-for-youtubers/">▶ YouTube</a>
+  <a href="/skatt-for-influencers/">◈ Instagram / TikTok</a>
+</div>
 
 <main>
 
