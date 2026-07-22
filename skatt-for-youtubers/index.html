@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skatt för YouTubers 2026 — så deklarerar du AdSense, Super Thanks och sponsring | Skattklart</title>
+<meta name="description" content="Får du betalt från YouTube/Google i dollar? Så deklarerar du AdSense, Super Thanks, kanalmedlemskap, sponsring och affiliate rätt i Sverige. Enkelt förklarat.">
+<link rel="canonical" href="https://skattklart.se/skatt-for-youtubers/">
+<meta property="og:title" content="Skatt för YouTubers 2026 — komplett guide för svenska kreatörer">
+<meta property="og:description" content="AdSense, Super Thanks, medlemskap, sponsring — vad måste du skatta på och hur? Enkelt förklarat.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://skattklart.se/skatt-for-youtubers/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org","@type": "FAQPage","mainEntity": [
+    {"@type":"Question","name":"Måste jag skatta på YouTube AdSense-intäkter?","acceptedAnswer":{"@type":"Answer","text":"Ja. AdSense-utbetalningar från Google räknas som skattepliktig inkomst i Sverige, även om de betalas ut i dollar eller euro från utlandet. Du beskattas där du är bosatt."}},
+    {"@type":"Question","name":"Hur deklarerar jag pengar jag fått i dollar från Google?","acceptedAnswer":{"@type":"Answer","text":"Räkna om utbetalningarna till kronor (kursen vid utbetalningsdagen) och ta upp summan som inkomst. Spara Googles utbetalningsrapporter som underlag."}},
+    {"@type":"Question","name":"Räknas gratisprodukter jag får (PR-paket) som inkomst?","acceptedAnswer":{"@type":"Answer","text":"Om du får produkter mot att du gör reklam eller omnämner dem kan de vara en skattepliktig förmån och tas upp till marknadsvärde. Rena gåvor utan motprestation är skattefria."}},
+    {"@type":"Question","name":"När blir mitt YouTube-skapande ett företag?","acceptedAnswer":{"@type":"Answer","text":"När det bedrivs regelbundet, varaktigt och med vinstsyfte kan det räknas som näringsverksamhet. Vid omsättning över 30 000 kr per år ska du normalt vara momsregistrerad."}}
+  ]
+}
+</script>
+<style>
+  :root { --navy:#1a2744; --navy2:#243460; --gold:#f0b429; --gold2:#e09a10;
+          --ink:#1a2744; --ink2:#556; --line:#e6e9f2; --yt:#ff0033; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { overflow-x:hidden; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+         color:var(--ink); background:#fff; line-height:1.65; }
+  a { color:var(--gold2); }
+  nav { background:var(--navy); height:60px; display:flex; align-items:center;
+        justify-content:space-between; padding:0 24px; }
+  .logo { display:inline-flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-mark { width:28px; height:28px; background:var(--gold); color:var(--navy); border-radius:7px;
+               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; }
+  .logo-word { color:#fff; font-weight:800; font-size:19px; letter-spacing:-.5px; }
+  .nav-cta { background:var(--gold); color:var(--navy); font-weight:700; font-size:13px;
+             padding:9px 18px; border-radius:7px; text-decoration:none; }
+  .hero { background:linear-gradient(160deg,var(--navy),var(--navy2) 60%,var(--navy));
+          color:#fff; padding:64px 24px 56px; text-align:center; }
+  .hero .kicker { display:inline-block; background:rgba(255,0,51,.18); color:#ff98ab;
+                  font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+                  padding:6px 16px; border-radius:20px; margin-bottom:20px; }
+  .hero h1 { font-size:clamp(28px,5vw,42px); line-height:1.2; max-width:720px; margin:0 auto 16px; }
+  .hero p { color:rgba(255,255,255,.7); font-size:18px; max-width:560px; margin:0 auto 28px; }
+  .hero .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:800;
+               font-size:16px; padding:15px 30px; border-radius:9px; text-decoration:none; }
+  main { max-width:720px; margin:0 auto; padding:52px 24px 40px; }
+  h2 { font-size:26px; margin:44px 0 14px; line-height:1.25; }
+  p { margin-bottom:16px; color:var(--ink2); }
+  main p, main li { font-size:16.5px; }
+  ul { margin:0 0 18px 22px; }
+  li { margin-bottom:8px; color:var(--ink2); }
+  strong { color:var(--ink); }
+  .lead { font-size:19px; color:var(--ink); }
+  .box { background:#f6f8fc; border:1px solid var(--line); border-left:4px solid var(--gold);
+         border-radius:10px; padding:18px 20px; margin:24px 0; }
+  .box strong { display:block; margin-bottom:4px; }
+  .tldr { background:var(--navy); color:#fff; border-radius:12px; padding:24px 26px; margin:8px 0 32px; }
+  .tldr h2 { color:#fff; margin:0 0 12px; font-size:18px; text-transform:uppercase; letter-spacing:.5px; }
+  .tldr ul { margin-left:20px; } .tldr li { color:rgba(255,255,255,.8); }
+  .cta-block { background:linear-gradient(160deg,var(--navy),var(--navy2)); color:#fff;
+               border-radius:16px; padding:36px 28px; text-align:center; margin:48px 0 20px; }
+  .cta-block h2 { color:#fff; margin-top:0; }
+  .cta-block p { color:rgba(255,255,255,.72); max-width:440px; margin:0 auto 22px; }
+  .cta-block .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:800;
+                    font-size:16px; padding:15px 32px; border-radius:9px; text-decoration:none; }
+  .faq dt { font-weight:700; color:var(--ink); margin-top:18px; }
+  .faq dd { margin:4px 0 0; color:var(--ink2); }
+  .related { display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 0; }
+  .related a { font-size:14px; background:#f6f8fc; border:1px solid var(--line); border-radius:8px;
+               padding:8px 14px; text-decoration:none; color:var(--navy); }
+  footer { border-top:1px solid var(--line); padding:32px 24px; text-align:center; color:#99a; font-size:13px; }
+  .disclaimer { max-width:640px; margin:0 auto 10px; }
+  @media(max-width:600px){ nav{padding:0 14px} main{padding:36px 16px} .hero{padding:48px 16px 40px} }
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><span class="logo-mark">S</span><span class="logo-word">Skatt<span style="color:var(--gold)">klart</span></span></a>
+  <a class="nav-cta" href="/demo/">Prova demot →</a>
+</nav>
+
+<header class="hero">
+  <div class="kicker">▶ Guide för YouTubers</div>
+  <h1>Skatt för YouTubers — så deklarerar du AdSense, Super Thanks och sponsring</h1>
+  <p>Får du betalt från Google i dollar och vet inte hur du redovisar det?
+     Här är allt förklarat på vanlig svenska.</p>
+  <a class="btn" href="/demo/">Se hur Skattklart hjälper dig →</a>
+</header>
+
+<main>
+  <div class="tldr">
+    <h2>Kort version</h2>
+    <ul>
+      <li><strong>Ja, AdSense ska skattas</strong> — även utbetalningar i dollar/euro från Google.</li>
+      <li><strong>Räkna om till kronor</strong> på utbetalningsdagens kurs. Spara Googles rapporter.</li>
+      <li><strong>Gratisprodukter (PR-paket)</strong> mot omnämnande kan vara skattepliktig förmån.</li>
+      <li><strong>Mycket är avdragsgillt</strong> — kamera, ljus, klippprogram, mikrofon.</li>
+    </ul>
+  </div>
+
+  <p class="lead">Kanalen växte, och en dag landade den första AdSense-utbetalningen på kontot — i
+     dollar, från Google Ireland. Och genast dök frågan upp: <strong>hur i hela friden
+     deklarerar jag det här?</strong></p>
+
+  <p>Lugn. Det är enklare än det låter. Den här guiden går igenom exakt vad som gäller för dig som
+     tjänar pengar på YouTube i Sverige, hur du hanterar utländska utbetalningar, och vad du får
+     dra av.</p>
+
+  <h2>Måste jag skatta på AdSense-pengarna?</h2>
+  <p>Ja. Som bosatt i Sverige beskattas du för dina inkomster oavsett var i världen de kommer
+     ifrån. AdSense-utbetalningar från Google är skattepliktig inkomst — det spelar ingen roll att
+     de kommer från Irland eller betalas i dollar.</p>
+
+  <div class="box">
+    <strong>Utbetalning i dollar eller euro?</strong>
+    Räkna om varje utbetalning till kronor med valutakursen den dag du fick pengarna, och ta upp
+    summan. Googles utbetalningsrapporter (finns i AdSense/YouTube Studio) är ditt underlag — spara dem.
+  </div>
+
+  <h2>Vilka YouTube-inkomster ska med?</h2>
+  <ul>
+    <li><strong>AdSense / Ad Revenue</strong> — annonsintäkterna, det vanligaste</li>
+    <li><strong>Super Thanks & Super Chat</strong> — tittarnas betalningar under videor/streams</li>
+    <li><strong>Kanalmedlemskap</strong> — månadsbetalande medlemmar</li>
+    <li><strong>YouTube Premium-andel</strong> — din del av Premium-tittarnas avgift</li>
+    <li><strong>Sponsring & integrerade samarbeten</strong> — betalda omnämnanden</li>
+    <li><strong>Affiliate-länkar</strong> — provision på köp via dina länkar</li>
+    <li><strong>Merch</strong> — försäljning av egna produkter</li>
+  </ul>
+
+  <h2>Räknas gratisprodukter (PR-paket) som inkomst?</h2>
+  <p>Ofta ja. Får du en produkt mot att du visar upp eller nämner den, är det en motprestation — då
+     kan produkten vara en <strong>skattepliktig förmån</strong> som tas upp till marknadsvärde. En
+     ren gåva utan krav på motprestation är skattefri. Gränsen är hårfin — det är precis en sån sak
+     där det lönar sig att låta någon bedöma åt dig.</p>
+
+  <h2>Vad får jag dra av som YouTuber?</h2>
+  <p>Kostnader för att skapa innehållet sänker din skatt. Vanliga avdrag:</p>
+  <ul>
+    <li><strong>Utrustning</strong> — kamera, objektiv, mikrofon, ljus, stativ, dator</li>
+    <li><strong>Mjukvara</strong> — klippprogram (Premiere, Final Cut, DaVinci), musiklicenser, plugins</li>
+    <li><strong>Rekvisita & material</strong> som köps in för videor</li>
+    <li><strong>Internet</strong> — den del som används i verksamheten</li>
+    <li><strong>Miniatyrer & grafik</strong> du beställt</li>
+    <li><strong>Hemmakontor / studio</strong> — schablon eller faktiska kostnader</li>
+  </ul>
+
+  <div class="box">
+    <strong>Spara kvitton från dag ett</strong>
+    Fota kvittona direkt — Skatteverket kan begära underlag flera år bakåt. Skattklart sparar dem
+    digitalt och kopplar dem till rätt avdrag åt dig.
+  </div>
+
+  <h2>När blir kanalen ett företag?</h2>
+  <p>Är inkomsterna små och oregelbundna redovisas de som hobby (inkomst av tjänst). När det blir
+     regelbundet, varaktigt och drivs med vinstsyfte lutar det mot enskild firma — och vid
+     omsättning över 30 000 kr/år blir det oftast moms.</p>
+
+  <div class="cta-block">
+    <h2>Slipp gissa — låt Skattklart göra jobbet</h2>
+    <p>Ladda upp dina AdSense-rapporter och kvitton, svara på några enkla frågor, och få
+       deklarationen klar att signera. Byggd för dig som inte kan skatt. Testa gratis.</p>
+    <a class="btn" href="/demo/">Prova demot →</a>
+  </div>
+
+  <h2 id="faq">Vanliga frågor</h2>
+  <dl class="faq">
+    <dt>Måste jag betala moms på AdSense?</dt>
+    <dd>AdSense från Google (utanför Sverige) hanteras särskilt — ofta omvänd skattskyldighet i näringsverksamhet. Skattklart reder ut vad som gäller för dig.</dd>
+    <dt>Vad händer om jag inte deklarerat tidigare års intäkter?</dt>
+    <dd>Du kan begära omprövning bakåt. Det är alltid billigare att rätta själv än att Skatteverket hittar det — och Skattklart hjälper dig.</dd>
+    <dt>Kan jag dra av min gaming-/redigeringsdator?</dt>
+    <dd>Den del som används för kanalen är normalt avdragsgill. Används datorn både privat och för YouTube fördelas avdraget.</dd>
+  </dl>
+
+  <p style="margin-top:28px;font-weight:600;color:var(--ink)">Streamar eller poddar du också?</p>
+  <div class="related">
+    <a href="/skatt-for-streamers/">Skatt för Twitch-streamers →</a>
+    <a href="/skatt-for-influencers/">Skatt för influencers →</a>
+  </div>
+</main>
+
+<footer>
+  <p class="disclaimer">Allmän information, inte individuell skatterådgivning. Reglerna kan ändras
+     och din situation kan skilja sig — vid tveksamhet, kontakta Skatteverket eller en auktoriserad
+     redovisningskonsult.</p>
+  <p>© 2026 Skattklart · <a href="/">skattklart.se</a> · <a href="/ordlista/">Ordlista</a></p>
+</footer>
+</body>
+</html>
