@@ -95,7 +95,12 @@
   footer { border-top:1px solid var(--line); padding:32px 24px; text-align:center;
            color:#99a; font-size:13px; }
   .disclaimer { max-width:640px; margin:0 auto 10px; }
-  @media(max-width:600px){ nav{padding:0 14px} main{padding:36px 16px} .hero{padding:48px 16px 40px} }
+  @media(max-width:600px){
+    nav{padding:0 14px} main{padding:36px 16px} .hero{padding:48px 16px 40px}
+    /* Jämförelsetabellen: tightare + tydligare radrubrik på mobil */
+    table{font-size:13.5px} th,td{padding:9px 8px}
+    td:first-child,th:first-child{font-weight:700;color:var(--navy);background:#f6f8fc}
+  }
 </style>
 </head>
 <body>
@@ -166,8 +171,8 @@
   <div class="table-wrap">
   <table>
     <tr><th></th><th>Hobby</th><th>Företag (enskild firma)</th></tr>
-    <tr><td>Omfattning</td><td>Då och då, oregelbundet</td><td>Regelbundet, långsiktigt</td></tr>
-    <tr><td>Redovisas som</td><td>Hobbyinkomst (tjänst)</td><td>Näringsverksamhet (NE-bilaga)</td></tr>
+    <tr><td>Hur ofta du streamar</td><td>Då och då, oregelbundet</td><td>Regelbundet, långsiktigt</td></tr>
+    <tr><td>Så redovisas inkomsten</td><td>Hobbyinkomst (tjänst)</td><td>Näringsverksamhet (NE-bilaga)</td></tr>
     <tr><td>Moms</td><td>Nej</td><td>Ja, vid omsättning över 30 000 kr/år</td></tr>
     <tr><td>F-skatt</td><td>Nej</td><td>Ja, ansöks hos Skatteverket</td></tr>
   </table>
@@ -175,7 +180,7 @@
 
   <p>En bra tumregel: när streamingen börjar kännas som ett jobb och pengarna är återkommande
      är det dags att fundera på enskild firma. Då får du också dra av mer och hanteringen blir
-     ryddigare.</p>
+     smidigare.</p>
 
   <h2>Vad får jag dra av som streamer?</h2>
   <p>Här missar många pengar. Kostnader du haft för att tjäna streamingpengarna är oftast
