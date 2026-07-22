@@ -10,8 +10,10 @@
          background:#1a2744; color:#fff; display:flex; flex-direction:column;
          align-items:center; justify-content:center; min-height:100vh;
          padding:24px; text-align:center; }
-  .logo { font-size:28px; font-weight:800; letter-spacing:-1px; margin-bottom:24px; }
-  .logo span { color:#f0b429; }
+  .logo { display:inline-flex; align-items:center; gap:10px; margin-bottom:24px; }
+  .logo-mark { width:36px; height:36px; background:#f0b429; color:#1a2744; border-radius:9px;
+               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:20px; }
+  .logo-word { font-size:26px; font-weight:800; letter-spacing:-.5px; }
   p { color:rgba(255,255,255,.65); margin-bottom:26px; font-size:15px; }
   .btn { display:inline-block; background:#f0b429; color:#1a2744; font-weight:800;
          font-size:17px; padding:16px 36px; border-radius:9px; text-decoration:none; }
@@ -19,16 +21,15 @@
 </style>
 </head>
 <body>
-  <div class="logo">Skatt<span>klart</span></div>
+  <div class="logo"><span class="logo-mark">S</span><span class="logo-word">Skattklart</span></div>
   <p>Demot öppnas automatiskt — annars tryck på knappen.</p>
-  <a class="btn" id="go" href="https://countries-hopes-put-soa.trycloudflare.com/demo-login">
-    Öppna demot →</a>
+  <a class="btn" id="go" href="https://demo.skattklart.se/demo-login">Öppna demot →</a>
   <div class="hint">Du får ett eget testkonto med färdiga exempel — inget att registrera,
     ingenting sparas kopplat till dig.</div>
   <script>
     setTimeout(function () {
       window.location.href = document.getElementById('go').href;
-    }, 1200);
+    }, 1000);
   </script>
 </body>
 </html>
