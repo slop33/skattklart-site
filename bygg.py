@@ -81,12 +81,7 @@ color:var(--navy);font-weight:800;font-size:16px;text-decoration:none}
 .lank{color:#fff;font-weight:600;text-decoration:underline;text-decoration-color:rgba(240,180,41,.7);text-underline-offset:4px;
 min-height:44px;display:inline-flex;align-items:center}
 .not{font-size:14px;color:rgba(255,255,255,.6)}
-.tema{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;margin:34px 0 0;font-size:15px;
-color:rgba(255,255,255,.82)}
-.temaval{display:inline-flex;gap:0;padding:3px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
-.temaval button{min-height:38px;padding:0 16px;border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-weight:600;cursor:pointer}
-.temaval button[aria-pressed="true"]{background:var(--gold);color:var(--navy)}
-.bild{margin:14px auto 0;max-width:1000px;border-radius:14px 14px 0 0;overflow:hidden;border:1px solid rgba(255,255,255,.18);
+.bild{margin:36px auto 0;max-width:1000px;border-radius:14px 14px 0 0;overflow:hidden;border:1px solid rgba(255,255,255,.18);
 border-bottom:0;box-shadow:0 -2px 40px rgba(0,0,0,.35);background:#fff}
 .bild img{display:block;width:100%;height:auto}
 .bildtext{font-size:13px;color:var(--dim);text-align:center;padding:10px 20px 0}
@@ -183,32 +178,11 @@ def sida(m, profiler):
     <a class="lank" href="%s/waitlist">Få besked när vi öppnar</a>
   </div>
   <p class="not">Demot är gratis och kräver inget konto.</p>
-  <div class="tema">
-    <span>Föredrar du mörkt läge? Det finns.</span>
-    <span class="temaval" role="group" aria-label="Visa produkten i ljust eller mörkt läge">
-      <button type="button" data-tema="ljus" aria-pressed="true">Ljust</button>
-      <button type="button" data-tema="mork" aria-pressed="false">Mörkt</button>
-    </span>
-  </div>
-  <div class="bild"><img id="produktbild" src="%s" data-ljus="%s" data-mork="%s" width="1600" height="1000" alt="%s"></div>
+  <div class="bild"><img src="%s" width="1600" height="1000" alt="%s"></div>
 </div></div>
-<p class="bildtext">Bilden visar demot med exempeldata. Skattklart följer enhetens inställning, och du byter läge när du vill.</p>
-<script>
-/* Boss 2026-10-07: "highlighta att det finns ett darkmode … 'föredrar du' tex." Besökare med mörkt
-   läge på enheten får den mörka bilden direkt; knapparna byter. Utan JS visas den ljusa. */
-(function () {
-  var bild = document.getElementById('produktbild');
-  var knappar = document.querySelectorAll('.temaval button');
-  function visa(tema) {
-    bild.src = bild.getAttribute('data-' + tema);
-    knappar.forEach(function (k) { k.setAttribute('aria-pressed', k.getAttribute('data-tema') === tema ? 'true' : 'false'); });
-  }
-  knappar.forEach(function (k) { k.addEventListener('click', function () { visa(k.getAttribute('data-tema')); }); });
-  try { if (window.matchMedia('(prefers-color-scheme: dark)').matches) visa('mork'); } catch (e) {}
-})();
-</script>
+<p class="bildtext">Bilden visar demot med exempeldata.</p>
 """ % (e(titel), e(beskr), BAS, sokvag, e(titel), e(beskr), BAS, sokvag, BAS, bild, CSS, LOGO,
-       e(etikett), e(rubrik), demo, APP, bild, bild, bild.replace('.webp', '-mork.webp'), e(bildalt)))
+       e(etikett), e(rubrik), demo, APP, bild, e(bildalt)))
 
     if tips:
         kort = "\n".join('    <div class="kort"><h3>%s</h3><p>%s</p></div>' % (e(t["rubrik"]), e(t["text"]))

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """ta_bilder.py — produktbilderna till välkomstsidorna, ljust och mörkt läge.
 
-    python ta_bilder.py            # alla marknader, båda lägena -> bilder/produkt-<slug>[-mork].webp
+    python ta_bilder.py            # alla marknader, ljust läge -> bilder/produkt-<slug>.webp
+    python ta_bilder.py --mork     # även mörkt läge (-mork.webp). Välkomstsidorna visar bara den ljusa
+                                   # sedan 2026-10-07 (Boss: "två olika ljus o natt på framsidan").
 
 Demot följer enhetens inställning (prefers-color-scheme, static/theme.js i appen), så
 mörkt läge tas genom att emulera den inställningen FÖRE sidan laddas — ingen knapp trycks.
@@ -92,11 +94,12 @@ def en_bild(slug, profil, mork):
 
 def main():
     os.makedirs(os.path.join(HAR, "bilder"), exist_ok=True)
-    bara = set(sys.argv[1:])          # python ta_bilder.py frilans investerare  (tomt = alla)
+    bara = set(a for a in sys.argv[1:] if not a.startswith("--"))   # python ta_bilder.py frilans investerare  (tomt = alla)
+    lagen = (False, True) if "--mork" in sys.argv else (False,)
     for m in MARKNADER:
         if bara and m["slug"] not in bara:
             continue
-        for mork in (False, True):
+        for mork in lagen:
             ut = en_bild(m["slug"], m["profil"], mork)
             if m["slug"] == "frilans":      # den neutrala sidans bild
                 with open(ut, "rb") as f, open(os.path.join(HAR, "bilder", "produkt%s.webp" % ("-mork" if mork else "")), "wb") as g:
