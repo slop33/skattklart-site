@@ -2,55 +2,120 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skattklart — lanseras snart</title>
-<meta name="description" content="Skattklart gör deklarationen enkel. Fota kvitton, få allt sammanställt, signera själv med BankID.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skattklart — deklarationen klar att lämna in. Öppnar snart</title>
+<meta name="description" content="Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv med BankID hos Skatteverket. Öppnar snart — prova demot redan nu.">
+<link rel="canonical" href="https://skattklart.se/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Skattklart — deklarationen klar att lämna in. Öppnar snart">
+<meta property="og:description" content="Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv med BankID hos Skatteverket. Öppnar snart — prova demot redan nu.">
+<meta property="og:url" content="https://skattklart.se/">
+<meta property="og:image" content="https://skattklart.se/bilder/produkt.webp">
+<meta name="theme-color" content="#1a2744">
 <style>
-  :root { --navy:#1a2744; --gold:#f0b429; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  html, body { overflow-x:hidden; height:100%; }
-  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-         background:linear-gradient(160deg,#1a2744 0%,#243460 55%,#1a2744 100%);
-         color:#fff; display:flex; flex-direction:column; align-items:center;
-         justify-content:center; min-height:100%; padding:24px; text-align:center; }
-  .logo { display:inline-flex; align-items:center; gap:12px; margin-bottom:10px; }
-  .logo-mark { width:42px; height:42px; background:var(--gold); color:var(--navy); border-radius:10px;
-               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:24px; }
-  .logo-word { font-size:32px; font-weight:800; letter-spacing:-.5px; color:#fff; }
-  .badge { display:inline-block; background:rgba(240,180,41,.15); color:var(--gold);
-           font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-           padding:6px 16px; border-radius:20px; margin-bottom:26px; }
-  h1 { font-size:clamp(26px,5vw,44px); line-height:1.2; max-width:640px; margin-bottom:16px; }
-  p.sub { color:rgba(255,255,255,.65); font-size:17px; max-width:520px; line-height:1.65;
-          margin-bottom:34px; }
-  .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:800;
-         font-size:16px; padding:15px 32px; border-radius:9px; text-decoration:none; }
-  .btn:hover { background:#e09a10; }
-  .hint { margin-top:16px; font-size:13px; color:rgba(255,255,255,.45); }
-  .guides { margin-top:28px; display:flex; gap:10px 18px; flex-wrap:wrap; justify-content:center; }
-  .guides a { font-size:13px; color:rgba(255,255,255,.6); text-decoration:none;
-              border-bottom:1px solid rgba(240,180,41,.4); padding-bottom:1px; }
-  .guides a:hover { color:var(--gold); }
-  footer { position:fixed; bottom:18px; left:0; right:0; font-size:12px;
-           color:rgba(255,255,255,.35); text-align:center; padding:0 16px; }
+:root{--navy:#1a2744;--navy2:#243460;--gold:#f0b429;--gold2:#d99a10;--bg:#f1f3f8;--panel:#fff;
+--ink:#1a2744;--dim:#4d5b78;--line:#d8deea}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+.topp{background:var(--navy);color:#fff}
+.inre{max-width:1120px;margin:0 auto;padding:0 20px}
+.topp .inre{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:21px;letter-spacing:-.3px}
+.logo-m{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo b{color:var(--gold);font-weight:800}
+.snart{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);
+background:var(--gold);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.hjalte{background:linear-gradient(180deg,var(--navy) 0,var(--navy2) 100%);color:#fff;padding:44px 0 0}
+.etikett{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;letter-spacing:-.6px;margin:12px 0 14px;max-width:820px;text-wrap:balance}
+h1 span{color:var(--gold)}
+.ingress{font-size:18px;color:rgba(255,255,255,.82);max-width:640px}
+.knappar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin:26px 0 8px}
+.knapp{display:inline-flex;align-items:center;min-height:50px;padding:0 26px;border-radius:10px;background:var(--gold);
+color:var(--navy);font-weight:800;font-size:16px;text-decoration:none}
+.knapp:hover{background:var(--gold2)}
+.lank{color:#fff;font-weight:600;text-decoration:underline;text-decoration-color:rgba(240,180,41,.7);text-underline-offset:4px;
+min-height:44px;display:inline-flex;align-items:center}
+.not{font-size:14px;color:rgba(255,255,255,.6)}
+.bild{margin:36px auto 0;max-width:1000px;border-radius:14px 14px 0 0;overflow:hidden;border:1px solid rgba(255,255,255,.18);
+border-bottom:0;box-shadow:0 -2px 40px rgba(0,0,0,.35);background:#fff}
+.bild img{display:block;width:100%;height:auto}
+.bildtext{font-size:13px;color:var(--dim);text-align:center;padding:10px 20px 0}
+section{padding:44px 0}
+h2{font-size:24px;letter-spacing:-.2px;margin-bottom:18px}
+.rutnat{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.kort{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.kort h3{font-size:17px;margin-bottom:6px}
+.kort p{font-size:15px;color:var(--dim)}
+.nr{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;
+align-items:center;justify-content:center;margin-bottom:10px}
+.kalla{font-size:13px;color:var(--dim);margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;background:var(--panel);
+border:1px solid var(--line);font-size:15px;font-weight:600;text-decoration:none}
+.chip:hover,.chip[aria-current]{border-color:var(--gold2);background:#fff8e6}
+.avslut{background:var(--navy);color:#fff;text-align:center}
+.avslut h2{margin-bottom:8px}
+.avslut p{color:rgba(255,255,255,.75);margin-bottom:20px}
+.avslut .knappar{justify-content:center;margin-top:0}
+footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:0 20px 28px}
+footer a{color:rgba(255,255,255,.75)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media (max-width:560px){.hjalte{padding-top:30px}.ingress{font-size:16px}.knapp{width:100%;justify-content:center}section{padding:34px 0}}
 </style>
 </head>
 <body>
-  <div class="logo"><span class="logo-mark"><svg viewBox="0 0 46 46" width="72%" height="72%" style="display:block" aria-label="Skattklart"><path d="M23 4 L39 10 V23 C39 33 32 40 23 43 C14 40 7 33 7 23 V10 Z" fill="#1a2744"/><path d="M15.5 24 l5.5 5.5 L31.5 18" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="logo-word">Skatt<span style="color:var(--gold,#f0b429)">klart</span></span></div>
-  <div class="badge">Under uppbyggnad</div>
-  <h1>Deklarationen, klar att signera.<br>Utan att du behöver kunna skatt.</h1>
-  <p class="sub">Fota dina kvitton, svara på några enkla frågor — Skattklart sammanställer
-     allt, granskar i tre oberoende steg och gör deklarationen klar. Du signerar alltid
-     själv med BankID hos Skatteverket.</p>
-  <a class="btn" href="/demo/">Prova demot →</a>
-  <div class="hint">Gratis att testa · inget konto behövs</div>
-  <div class="guides">
-    <a href="/skatt-for-streamers/">Skatt för streamers</a>
-    <a href="/skatt-for-youtubers/">Skatt för YouTubers</a>
-    <a href="/skatt-for-influencers/">Skatt för influencers</a>
+<header class="topp"><div class="inre">
+  <a class="logo" href="/" aria-label="Skattklart, startsidan"><span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" aria-hidden="true"><path d="M23 4 L39 10 V23 C39 33 32 40 23 43 C14 40 7 33 7 23 V10 Z" fill="#1a2744"/><path d="M15.5 24 l5.5 5.5 L31.5 18" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Skatt<b>klart</b></span></a>
+  <span class="snart">Öppnar snart</span>
+</div></header>
+<main>
+<div class="hjalte"><div class="inre">
+  <p class="etikett">Deklaration för privatpersoner och enskild firma</p>
+  <h1>Din deklaration klar att lämna in <span>— med avdragen du annars missar.</span></h1>
+  <p class="ingress">Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.</p>
+  <div class="knappar">
+    <a class="knapp" href="/demo/">Prova demot</a>
+    <a class="lank" href="https://app.skattklart.se/waitlist">Få besked när vi öppnar</a>
   </div>
-  <footer>© 2026 Skattklart · hej@skattklart.se ·
-    <a href="/integritetspolicy/" style="color:rgba(255,255,255,.5)">Integritetspolicy</a> ·
-    <a href="/anvandarvillkor/" style="color:rgba(255,255,255,.5)">Användarvillkor</a></footer>
+  <p class="not">Demot är gratis och kräver inget konto.</p>
+  <div class="bild"><img src="/bilder/produkt.webp" width="1600" height="1000" alt="Skattklart i demoläge: nästa steg, skatten hittills och kommande datum."></div>
+</div></div>
+<p class="bildtext">Bilden visar demot med exempeldata.</p>
+<section><div class="inre">
+  <h2>Så funkar det</h2>
+  <div class="rutnat">
+    <div class="kort"><span class="nr">1</span><h3>Svara och ladda upp</h3><p>Du svarar på frågor om året och fotar eller laddar upp kvitton.</p></div>
+    <div class="kort"><span class="nr">2</span><h3>Skattklart räknar</h3><p>Du får rutorna och bilagorna till Inkomstdeklaration 1, med avdragen framräknade.</p></div>
+    <div class="kort"><span class="nr">3</span><h3>Du lämnar in själv</h3><p>Du skriver under med BankID hos Skatteverket. Skattklart lämnar aldrig in åt dig.</p></div>
+  </div>
+</div></section>
+<section style="padding-top:0"><div class="inre">
+  <h2>Vem är du?</h2>
+  <div class="chips">
+    <a class="chip" href="/streamer/">För streamers</a>
+    <a class="chip" href="/youtuber/">För youtubers och tiktokare</a>
+    <a class="chip" href="/influencer/">För influencers</a>
+    <a class="chip" href="/e-handel/">För e-handlare</a>
+    <a class="chip" href="/frilans/">För frilansare och konsulter</a>
+    <a class="chip" href="/uthyrning/">För dig som hyr ut</a>
+    <a class="chip" href="/investerare/">För dig med aktier, fonder eller krypto</a>
+    <a class="chip" href="/extraknack/">För dig med extraknäck</a>
+  </div>
+</div></section>
+<section class="avslut"><div class="inre">
+  <h2>Se hur det ser ut</h2>
+  <p>Demot har färdiga exempel. Inget sparas kopplat till dig.</p>
+  <div class="knappar">
+    <a class="knapp" href="/demo/">Prova demot</a>
+    <a class="lank" href="https://app.skattklart.se/waitlist">Få besked när vi öppnar</a>
+  </div>
+</div></section>
+</main>
+<footer>© 2026 Skattklart · hej@skattklart.se ·
+  <a href="/integritetspolicy/">Integritetspolicy</a> · <a href="/anvandarvillkor/">Användarvillkor</a></footer>
 </body>
 </html>
