@@ -80,6 +80,12 @@ def en_bild(slug, profil, mork):
         tema, png = asyncio.run(ta(mal["webSocketDebuggerUrl"], DEMO % profil, mork))
     finally:
         subprocess.run(["taskkill", "/F", "/T", "/PID", str(p.pid)], capture_output=True)
+        # Vänta in processen: utan wait() varnar Python "subprocess ... is still running"
+        # (ResourceWarning) när Popen-objektet städas bort (2026-10-18).
+        try:
+            p.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            print("varning: chrome (pid %d) avslutades inte inom 10 s" % p.pid)
         time.sleep(0.5)
     vantat = "dark" if mork else "light"
     if tema != vantat:
