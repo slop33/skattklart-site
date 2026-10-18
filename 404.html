@@ -58,6 +58,18 @@ border:1px solid var(--line);font-size:15px;font-weight:600;text-decoration:none
 .avslut .knappar{justify-content:center;margin-top:0}
 footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:0 20px 28px}
 footer a{color:rgba(255,255,255,.75)}
+.val{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.val a{display:block;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:14px;
+padding:20px 22px;text-decoration:none}
+.hjalte .fraga{font-size:21px;margin:28px 0 12px}
+.hjalte .sma{color:rgba(255,255,255,.78)}
+.hjalte .sma a{color:#fff}
+.val a:hover{border-color:var(--gold2);background:#fff8e6}
+.val h3{font-size:21px;margin-bottom:6px}
+.val h3::after{content:" →";color:var(--gold2)}
+.val p{font-size:15px;color:var(--dim)}
+.sma{font-size:15px;color:var(--dim);margin-top:14px}
+.sma a{font-weight:600}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 @media (max-width:560px){.hjalte{padding-top:30px}.ingress{font-size:16px}.knapp{width:100%;justify-content:center}section{padding:34px 0}}
 

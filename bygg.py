@@ -9,7 +9,9 @@ adressen. och skattklart.se är bara en 'printscreen' på produkten. 'öppnar sn
 
 EN mall, en post per marknad. Skattetexterna (de tre raderna per marknad) hämtas
 ordagrant ur appens faktagranskade data/profiler.json — ingen skattetext skrivs här.
-Guiderna (skatt-for-*/), villkoren och omdirigeringarna (streamers/, twitch/ …) rörs inte.
+Guiderna (skatt-for-*/), villkoren och omdirigeringarna (streamers/, youtubers/ …) rörs inte.
+Källsidorna (twitch/, kick/, youtube/, tiktok/) skrivs härifrån sedan 2026-10-18 — de var
+förut omdirigeringar till streamerguiden.
 Ikonerna (skölden) kopieras ur appens static/icons, så skattklart.se och app.skattklart.se
 har samma favicon. sitemap.xml får <lastmod> ur git (kräver git och Pillow).
 """
@@ -41,27 +43,49 @@ IKONLANKAR = ('<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image
               '<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
 
 # slug = adressen. profil = slug i appens profiler.json (styr demots exempel och tipsen).
+# Ordningen = ordningen bland "Vanliga situationer": de vanligaste först. Boss 2026-10-18:
+# "Sidan är inte bara för gamers". Adressen /frilans ligger kvar (länkar finns), men ordet
+# används inte i texten: "Alla vet inte vad frilans betyder".
 MARKNADER = [
-    {"slug": "streamer", "profil": "streamer", "etikett": "För streamers",
+    {"slug": "extraknack", "profil": "anstalld", "etikett": "För dig med extraknäck",
+     "rubrik": "Deklarationen för dig med lön och lite vid sidan av", "tips": None, "guide": None},
+    {"slug": "investerare", "profil": "investerare", "etikett": "För dig med aktier, fonder eller krypto",
+     "rubrik": "Deklarationen för dig som sålt aktier eller krypto", "tips": None, "guide": None},
+    {"slug": "uthyrning", "profil": "uthyrare", "etikett": "För dig som hyr ut",
+     "rubrik": "Deklarationen för dig som hyr ut", "tips": None, "guide": None},
+    {"slug": "e-handel", "profil": "ehandel", "etikett": "För dig som säljer på nätet",
+     "rubrik": "Deklarationen för dig som säljer på nätet", "tips": None, "guide": None},
+    {"slug": "frilans", "profil": "konsult", "etikett": "För dig som säljer tjänster",
+     "rubrik": "Deklarationen för dig som fakturerar kunder", "tips": None, "guide": None},
+    {"slug": "streamer", "profil": "streamer", "etikett": "För dig som streamar",
      "rubrik": "Deklarationen för dig som streamar",
      "tips": ["Donationer är skattepliktiga", "Utrustningen är avdragsgill", "Prenumerationer och mjukvara"],
      "guide": ("/skatt-for-streamers/", "Guiden: skatt för streamers")},
-    {"slug": "youtuber", "profil": "creator", "etikett": "För youtubers och tiktokare",
+    {"slug": "youtuber", "profil": "creator", "etikett": "För dig som gör video",
      "rubrik": "Deklarationen för dig som gör video", "tips": None,
      "guide": ("/skatt-for-youtubers/", "Guiden: skatt för youtubers")},
-    {"slug": "influencer", "profil": "influencer", "etikett": "För influencers",
+    {"slug": "influencer", "profil": "influencer", "etikett": "För dig som gör samarbeten",
      "rubrik": "Deklarationen för dig som gör samarbeten", "tips": None,
      "guide": ("/skatt-for-influencers/", "Guiden: skatt för influencers")},
-    {"slug": "e-handel", "profil": "ehandel", "etikett": "För e-handlare",
-     "rubrik": "Deklarationen för dig som säljer på nätet", "tips": None, "guide": None},
-    {"slug": "frilans", "profil": "konsult", "etikett": "För frilansare och konsulter",
-     "rubrik": "Deklarationen för dig som fakturerar", "tips": None, "guide": None},
-    {"slug": "uthyrning", "profil": "uthyrare", "etikett": "För dig som hyr ut",
-     "rubrik": "Deklarationen för dig som hyr ut", "tips": None, "guide": None},
-    {"slug": "investerare", "profil": "investerare", "etikett": "För dig med aktier, fonder eller krypto",
-     "rubrik": "Deklarationen för dig som sålt aktier eller krypto", "tips": None, "guide": None},
-    {"slug": "extraknack", "profil": "anstalld", "etikett": "För dig med extraknäck",
-     "rubrik": "Deklarationen för dig med lön och lite vid sidan av", "tips": None, "guide": None},
+]
+
+# Källsidor: adressen man skriver eller klickar från en stream (skattklart.se/twitch).
+# Boss 2026-10-18: "många av dom som klickar från en stream är väl inte streamers. Så
+# kanske bra o inte anta att dom är streamers". Sidan hälsar på källan, men erbjuder
+# samma två val som startsidan; den som själv skapar får en egen länk längre ned.
+KALLOR = [
+    {"slug": "twitch", "fraga": "Streamar du själv?", "namn": "Twitch", "gor": "streamar", "egen": "/streamer/"},
+    {"slug": "kick", "fraga": "Streamar du själv?", "namn": "Kick", "gor": "streamar", "egen": "/streamer/"},
+    {"slug": "youtube", "fraga": "Gör du video själv?", "namn": "YouTube", "gor": "gör video", "egen": "/youtuber/"},
+    {"slug": "tiktok", "fraga": "Gör du video själv?", "namn": "TikTok", "gor": "gör video", "egen": "/youtuber/"},
+]
+
+# Första frågan — samma två val och samma vardagsord som appens startsida (index.html).
+VAL = [
+    ("privat", "Privatperson",
+     "Lön och något mer: sålt aktier, krypto eller bostad, hyr ut eller har sidoinkomster."),
+    ("firma", "Enskild firma",
+     "Du har en egen firma, till exempel som hantverkare, konsult eller streamer."),
 ]
 
 # Samma tre steg som appens startsida ("Så funkar det") och llms.txt beskriver.
@@ -122,6 +146,18 @@ border:1px solid var(--line);font-size:15px;font-weight:600;text-decoration:none
 .avslut .knappar{justify-content:center;margin-top:0}
 footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:0 20px 28px}
 footer a{color:rgba(255,255,255,.75)}
+.val{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.val a{display:block;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:14px;
+padding:20px 22px;text-decoration:none}
+.hjalte .fraga{font-size:21px;margin:28px 0 12px}
+.hjalte .sma{color:rgba(255,255,255,.78)}
+.hjalte .sma a{color:#fff}
+.val a:hover{border-color:var(--gold2);background:#fff8e6}
+.val h3{font-size:21px;margin-bottom:6px}
+.val h3::after{content:" →";color:var(--gold2)}
+.val p{font-size:15px;color:var(--dim)}
+.sma{font-size:15px;color:var(--dim);margin-top:14px}
+.sma a{font-weight:600}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 @media (max-width:560px){.hjalte{padding-top:30px}.ingress{font-size:16px}.knapp{width:100%;justify-content:center}section{padding:34px 0}}
 """
@@ -141,8 +177,26 @@ def las_profiler():
         return {p["slug"]: p for p in json.load(f)["profiler"]}
 
 
-def sida(m, profiler):
-    """m = marknadspost eller None (den neutrala välkomstsidan)."""
+def valblock(fran=None):
+    """De två valen + raderna om bara lön och aktiebolag, i toppen av startsidan så att
+    första frågan syns utan att scrolla. Valen leder till appens Kom igång-sidor, som
+    förklarar stegen för just det valet."""
+    kort = "\n".join('    <a href="%s/kom-igang/%s"><h3>%s</h3><p>%s</p></a>' % (APP, s, e(r), e(t))
+                      for s, r, t in VAL)
+    return """  <h2 class="fraga">Vad ska du deklarera?</h2>
+  <div class="val">
+%s
+  </div>
+  <p class="sma">Bara lön? Då räcker ofta Skatteverkets förifyllda deklaration.</p>
+  <p class="sma">Har du aktiebolag? Det kommer senare. Din egen privata deklaration kan du göra redan nu.</p>
+%s""" % (kort, ('  <p class="sma">%s <a href="%s">Det här gäller för dig</a></p>\n'
+              % (e(fran["fraga"]), fran["egen"])
+              if fran else ""))
+
+
+def sida(m, profiler, fran=None):
+    """m = marknadspost eller None (den neutrala välkomstsidan). fran = källpost (twitch …):
+    då är det startsidan med en hälsning, och den antar inte att besökaren skapar själv."""
     if m:
         p = profiler[m["profil"]]
         sokvag = "/%s/" % m["slug"]
@@ -163,6 +217,21 @@ def sida(m, profiler):
         demo, bild = "/demo/", "/bilder/produkt.webp"
         bildalt = "Skattklart i demoläge: nästa steg, skatten hittills och kommande datum."
         tips = []
+    if fran:
+        sokvag = "/%s/" % fran["slug"]
+        titel = "Skattklart — deklarationen för alla. Öppnar snart"
+        beskr = ("Kom du hit från %s? Skattklart hjälper alla som ska deklarera, inte bara den som %s. "
+                 "Öppnar snart — prova demot redan nu." % (fran["namn"], fran["gor"]))
+        etikett = "Kom du hit från %s?" % fran["namn"]
+        rubrik = "Deklarationen för alla, inte bara den som %s" % fran["gor"]
+    ingress = ("De flesta som klickar hit från en stream eller en video ska bara deklarera som vanligt. "
+               "Skattklart hjälper alla: du med lön och lite vid sidan av, du som sålt aktier eller hyr ut, "
+               "och du med egen firma." if fran else
+               "Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och "
+               "bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.")
+    vantelista = "%s/waitlist%s" % (APP, ("?fran=" + fran["slug"]) if fran else "")
+    # Källsidorna är varianter av startsidan: kanonisk adress är startsidan.
+    kanon = "/" if fran else sokvag
 
     delar = []
     delar.append("""<!DOCTYPE html>
@@ -190,18 +259,19 @@ def sida(m, profiler):
 <main>
 <div class="hjalte"><div class="inre">
   <p class="etikett">%s</p>
-  <h1>%s <span>— med avdragen du annars missar.</span></h1>
-  <p class="ingress">Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.</p>
-  <div class="knappar">
+  <h1>%s%s</h1>
+  <p class="ingress">%s</p>
+%s  <div class="knappar">
     <a class="knapp" href="%s">Prova demot</a>
-    <a class="lank" href="%s/waitlist">Få besked när vi öppnar</a>
+    <a class="lank" href="%s">Få besked när vi öppnar</a>
   </div>
   <p class="not">Demot är gratis och kräver inget konto.</p>
   <div class="bild"><img src="%s" width="1600" height="1000" alt="%s"></div>
 </div></div>
 <p class="bildtext">Bilden visar demot med exempeldata.</p>
-""" % (e(titel), e(beskr), BAS, sokvag, e(titel), e(beskr), BAS, sokvag, BAS, bild, IKONLANKAR, CSS, LOGO,
-       e(etikett), e(rubrik), demo, APP, bild, e(bildalt)))
+""" % (e(titel), e(beskr), BAS, kanon, e(titel), e(beskr), BAS, sokvag, BAS, bild, IKONLANKAR, CSS, LOGO,
+       e(etikett), e(rubrik), "" if fran else " <span>— med avdragen du annars missar.</span>", e(ingress),
+       "" if m else valblock(fran), demo, vantelista, bild, e(bildalt)))
 
     if tips:
         kort = "\n".join('    <div class="kort"><h3>%s</h3><p>%s</p></div>' % (e(t["rubrik"]), e(t["text"]))
@@ -237,7 +307,7 @@ def sida(m, profiler):
   <p>Demot har färdiga exempel. Inget sparas kopplat till dig.</p>
   <div class="knappar">
     <a class="knapp" href="%s">Prova demot</a>
-    <a class="lank" href="%s/waitlist">Få besked när vi öppnar</a>
+    <a class="lank" href="%s">Få besked när vi öppnar</a>
   </div>
 </div></section>
 </main>
@@ -246,7 +316,7 @@ def sida(m, profiler):
 </body>
 </html>
 """ % (' style="padding-top:0"' if tips else "", steg,
-       "Fler ingångar" if m else "Vem är du?", chips, demo, APP))
+       "Fler ingångar" if m else "Vanliga situationer", chips, demo, vantelista))
     return "".join(delar)
 
 
@@ -358,6 +428,8 @@ def main():
     skriv("index.html", sida(None, profiler))
     for m in MARKNADER:
         skriv("%s/index.html" % m["slug"], sida(m, profiler))
+    for k in KALLOR:
+        skriv("%s/index.html" % k["slug"], sida(None, profiler, fran=k))
     skriv("demo/index.html", DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
     skriv("404.html", SIDA404 % (IKONLANKAR, CSS, LOGO))
     skriv_ikoner()

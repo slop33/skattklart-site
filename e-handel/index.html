@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Skattklart för e-handlare — öppnar snart</title>
+<title>Skattklart för dig som säljer på nätet — öppnar snart</title>
 <meta name="description" content="Deklarationen för dig som säljer på nätet. Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv. Öppnar snart — prova demot redan nu.">
 <link rel="canonical" href="https://skattklart.se/e-handel/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Skattklart för e-handlare — öppnar snart">
+<meta property="og:title" content="Skattklart för dig som säljer på nätet — öppnar snart">
 <meta property="og:description" content="Deklarationen för dig som säljer på nätet. Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv. Öppnar snart — prova demot redan nu.">
 <meta property="og:url" content="https://skattklart.se/e-handel/">
 <meta property="og:image" content="https://skattklart.se/bilder/produkt-e-handel.webp">
@@ -65,6 +65,18 @@ border:1px solid var(--line);font-size:15px;font-weight:600;text-decoration:none
 .avslut .knappar{justify-content:center;margin-top:0}
 footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:0 20px 28px}
 footer a{color:rgba(255,255,255,.75)}
+.val{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.val a{display:block;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:14px;
+padding:20px 22px;text-decoration:none}
+.hjalte .fraga{font-size:21px;margin:28px 0 12px}
+.hjalte .sma{color:rgba(255,255,255,.78)}
+.hjalte .sma a{color:#fff}
+.val a:hover{border-color:var(--gold2);background:#fff8e6}
+.val h3{font-size:21px;margin-bottom:6px}
+.val h3::after{content:" →";color:var(--gold2)}
+.val p{font-size:15px;color:var(--dim)}
+.sma{font-size:15px;color:var(--dim);margin-top:14px}
+.sma a{font-weight:600}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 @media (max-width:560px){.hjalte{padding-top:30px}.ingress{font-size:16px}.knapp{width:100%;justify-content:center}section{padding:34px 0}}
 </style>
@@ -76,7 +88,7 @@ footer a{color:rgba(255,255,255,.75)}
 </div></header>
 <main>
 <div class="hjalte"><div class="inre">
-  <p class="etikett">För e-handlare</p>
+  <p class="etikett">För dig som säljer på nätet</p>
   <h1>Deklarationen för dig som säljer på nätet <span>— med avdragen du annars missar.</span></h1>
   <p class="ingress">Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.</p>
   <div class="knappar">
@@ -106,14 +118,14 @@ footer a{color:rgba(255,255,255,.75)}
 <section style="padding-top:0"><div class="inre">
   <h2>Fler ingångar</h2>
   <div class="chips">
-    <a class="chip" href="/streamer/">För streamers</a>
-    <a class="chip" href="/youtuber/">För youtubers och tiktokare</a>
-    <a class="chip" href="/influencer/">För influencers</a>
-    <a class="chip" href="/e-handel/" aria-current="page">För e-handlare</a>
-    <a class="chip" href="/frilans/">För frilansare och konsulter</a>
-    <a class="chip" href="/uthyrning/">För dig som hyr ut</a>
-    <a class="chip" href="/investerare/">För dig med aktier, fonder eller krypto</a>
     <a class="chip" href="/extraknack/">För dig med extraknäck</a>
+    <a class="chip" href="/investerare/">För dig med aktier, fonder eller krypto</a>
+    <a class="chip" href="/uthyrning/">För dig som hyr ut</a>
+    <a class="chip" href="/e-handel/" aria-current="page">För dig som säljer på nätet</a>
+    <a class="chip" href="/frilans/">För dig som säljer tjänster</a>
+    <a class="chip" href="/streamer/">För dig som streamar</a>
+    <a class="chip" href="/youtuber/">För dig som gör video</a>
+    <a class="chip" href="/influencer/">För dig som gör samarbeten</a>
   </div>
 </div></section>
 <section class="avslut"><div class="inre">
