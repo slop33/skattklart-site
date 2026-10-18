@@ -1,0 +1,3 @@
+# Backuper före ändring (JAI-regeln <fil>.bak-<datum>) ska aldrig publiceras på GitHub Pages.
+*.bak-*
+__pycache__/

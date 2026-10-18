@@ -5,22 +5,40 @@ Boss 2026-10-07: "välkomstsida lite anpassad. Neutral. Influencer, streamer etc
 skattklart.se/twitch etc. för olika marknader" + "Skattklart.se/demo kan vara demo
 adressen. och skattklart.se är bara en 'printscreen' på produkten. 'öppnar snart' ish".
 
-    python bygg.py            # skriver index.html, <marknad>/index.html, demo/, 404, sitemap
+    python bygg.py            # skriver index.html, <marknad>/index.html, demo/, 404, ikonerna, sitemap
 
 EN mall, en post per marknad. Skattetexterna (de tre raderna per marknad) hämtas
 ordagrant ur appens faktagranskade data/profiler.json — ingen skattetext skrivs här.
 Guiderna (skatt-for-*/), villkoren och omdirigeringarna (streamers/, twitch/ …) rörs inte.
+Ikonerna (skölden) kopieras ur appens static/icons, så skattklart.se och app.skattklart.se
+har samma favicon. sitemap.xml får <lastmod> ur git (kräver git och Pillow).
 """
+import datetime
 import html
 import io
 import json
 import os
+import re
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
 
 HAR = os.path.dirname(os.path.abspath(__file__))
-PROFILER = os.path.join(HAR, "..", "..", "skattklart", "data", "profiler.json")
+APPROT = os.path.join(HAR, "..", "..", "skattklart")
+PROFILER = os.path.join(APPROT, "data", "profiler.json")
+IKONER = os.path.join(APPROT, "static", "icons")
 BAS = "https://skattklart.se"
 APP = "https://app.skattklart.se"
-DEMO = "https://demo.skattklart.se/demo-login"
+# Demot startas på appens egen värd. demo.skattklart.se är en tredje värd för samma app
+# (struktur.md §3 p.2) och ska 301:a till app.skattklart.se (omgång 5). Innan dess ska
+# återanropen som pekar på demo-värden kontrolleras eller flyttas: Enable Bankings
+# redirect och, enligt appens LAUNCH.md, Stripes webhook.
+DEMO = APP + "/demo-login"
+# Samma två länkar som appens bas.html (där under /static/icons/). favicon.ico i roten
+# täcker sidorna utan egen <link rel="icon">: guiderna, villkoren och omdirigeringarna,
+# som bygg.py inte skriver.
+IKONLANKAR = ('<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">\n'
+              '<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
 
 # slug = adressen. profil = slug i appens profiler.json (styr demots exempel och tipsen).
 MARKNADER = [
@@ -161,6 +179,7 @@ def sida(m, profiler):
 <meta property="og:url" content="%s%s">
 <meta property="og:image" content="%s%s">
 <meta name="theme-color" content="#1a2744">
+%s
 <style>%s</style>
 </head>
 <body>
@@ -181,7 +200,7 @@ def sida(m, profiler):
   <div class="bild"><img src="%s" width="1600" height="1000" alt="%s"></div>
 </div></div>
 <p class="bildtext">Bilden visar demot med exempeldata.</p>
-""" % (e(titel), e(beskr), BAS, sokvag, e(titel), e(beskr), BAS, sokvag, BAS, bild, CSS, LOGO,
+""" % (e(titel), e(beskr), BAS, sokvag, e(titel), e(beskr), BAS, sokvag, BAS, bild, IKONLANKAR, CSS, LOGO,
        e(etikett), e(rubrik), demo, APP, bild, e(bildalt)))
 
     if tips:
@@ -239,6 +258,7 @@ DEMOSIDA = """<!DOCTYPE html>
 <title>Skattklart — demo</title>
 <meta name="description" content="Prova Skattklart med färdiga exempel. Gratis, inget konto.">
 <link rel="canonical" href="%s/demo/">
+%s
 <style>%s
 body{background:var(--navy);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
 padding:24px;text-align:center}
@@ -271,6 +291,7 @@ SIDA404 = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sidan finns inte — Skattklart</title>
 <meta name="robots" content="noindex">
+%s
 <style>%s
 body{background:var(--navy);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
 padding:24px;text-align:center}
@@ -294,19 +315,66 @@ def skriv(rel, text):
     print("skrev", rel, len(text.encode("utf-8")), "B")
 
 
+def skriv_ikoner():
+    """favicon-32.png och apple-touch-icon.png kopieras ur appen. favicon.ico (16/32/48 px)
+    byggs ur appens icon-512.png, för sidor utan <link rel="icon"> och för verktyg som
+    bara frågar efter /favicon.ico."""
+    for namn in ("favicon-32.png", "apple-touch-icon.png"):
+        shutil.copyfile(os.path.join(IKONER, namn), os.path.join(HAR, namn))
+        print("kopierade", namn)
+    from PIL import Image  # bara här: ta_bilder.py importerar MARKNADER ur den här filen
+    with Image.open(os.path.join(IKONER, "icon-512.png")) as bild:
+        bild.convert("RGBA").save(os.path.join(HAR, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
+    print("skrev favicon.ico")
+
+
+def git(*arg):
+    try:
+        r = subprocess.run(["git", "-C", HAR] + list(arg), capture_output=True, text=True, encoding="utf-8")
+    except FileNotFoundError:
+        raise SystemExit("bygg.py: git finns inte i PATH — sitemapens lastmod kan inte sättas")
+    if r.returncode != 0:
+        raise SystemExit("bygg.py: git %s misslyckades: %s" % (" ".join(arg), r.stderr.strip()))
+    return r.stdout.strip()
+
+
+def lastmod(rel):
+    """Dagen då filens innehåll senast ändrades. Skiljer den sig från senaste commit (eller är
+    ny) är det i dag, annars commitdatumet. Körs efter att sidorna skrivits.
+    Bygg och committa samma dag: committas sidorna en senare dag flyttar nästa bygge
+    datumen i sitemap.xml till commitdagen (bara sitemapen ändras då)."""
+    if not os.path.isfile(os.path.join(HAR, rel)):
+        raise SystemExit("bygg.py: %s finns inte men står i sitemapen" % rel)
+    if git("status", "--porcelain", "--", rel):
+        return datetime.date.today().isoformat()
+    datum = git("log", "-1", "--format=%cs", "--", rel)
+    if not datum:
+        raise SystemExit("bygg.py: git har ingen historik för %s" % rel)
+    return datum
+
+
 def main():
     profiler = las_profiler()
     skriv("index.html", sida(None, profiler))
     for m in MARKNADER:
         skriv("%s/index.html" % m["slug"], sida(m, profiler))
-    skriv("demo/index.html", DEMOSIDA % (BAS, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
-    skriv("404.html", SIDA404 % (CSS, LOGO))
+    skriv("demo/index.html", DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
+    skriv("404.html", SIDA404 % (IKONLANKAR, CSS, LOGO))
+    skriv_ikoner()
     sokvagar = ["/"] + ["/%s/" % m["slug"] for m in MARKNADER] + [
         "/skatt-for-streamers/", "/skatt-for-youtubers/", "/skatt-for-influencers/",
         "/integritetspolicy/", "/anvandarvillkor/"]
     skriv("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-          + "".join("  <url><loc>%s%s</loc></url>\n" % (BAS, s) for s in sokvagar) + "</urlset>\n")
+          + "".join("  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n"
+                    % (BAS, s, lastmod(s.lstrip("/") + "index.html")) for s in sokvagar)
+          + "</urlset>\n")
+    # Självkontroll: giltig XML, en rad per sökväg och ett datum på varje rad.
+    ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    rader = ET.parse(os.path.join(HAR, "sitemap.xml")).getroot().findall("s:url", ns)
+    datum = [r.findtext("s:lastmod", namespaces=ns) or "" for r in rader]
+    if len(rader) != len(sokvagar) or not all(re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) for d in datum):
+        raise SystemExit("bygg.py: sitemap.xml blev fel: %d rader, lastmod %s" % (len(rader), datum))
 
 
 if __name__ == "__main__":
