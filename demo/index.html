@@ -94,5 +94,26 @@ p{color:rgba(255,255,255,.75);margin:20px 0 24px;max-width:360px}
       setTimeout(function () { location.href = a.href; }, 1000);
     })();
   </script>
+<script>
+(function () {
+  var f = (new URLSearchParams(location.search).get('fran') || '').toLowerCase();
+  if (!/^[a-z0-9-]{1,40}$/.test(f)) f = '';
+  try {
+    navigator.sendBeacon('https://app.skattklart.se/api/t',
+                         JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
+  } catch (e) {}
+  if (!f) return;
+  var lankar = document.querySelectorAll('a[href]');
+  for (var i = 0; i < lankar.length; i++) {
+    var u;
+    try { u = new URL(lankar[i].href); } catch (e) { continue; }
+    if (u.hostname === 'app.skattklart.se' ||
+        (u.hostname === location.hostname && u.pathname.indexOf('/demo/') === 0)) {
+      u.searchParams.set('fran', f);
+      lankar[i].href = u.toString();
+    }
+  }
+})();
+</script>
 </body>
 </html>

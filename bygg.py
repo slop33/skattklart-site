@@ -168,6 +168,38 @@ LOGO = ('<span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" 
         'stroke-linecap="round" stroke-linejoin="round"/></svg></span>')
 
 
+# Anonym räknare (Boss 2026-10-18): ingen kaka och ingen lagring i webbläsaren — bara
+# källa och sida skickas till appens /api/t, som räknar per dag. Källan (?fran= eller
+# källsidans egen) läggs på länkarna till demot, Kom igång och väntelistan, så att de
+# också räknas för den. __STANDARD__ = källsidans slug, annars tomt.
+RAKNARE = """<script>
+(function () {
+  var f = (new URLSearchParams(location.search).get('fran') || '__STANDARD__').toLowerCase();
+  if (!/^[a-z0-9-]{1,40}$/.test(f)) f = '';
+  try {
+    navigator.sendBeacon('https://app.skattklart.se/api/t',
+                         JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
+  } catch (e) {}
+  if (!f) return;
+  var lankar = document.querySelectorAll('a[href]');
+  for (var i = 0; i < lankar.length; i++) {
+    var u;
+    try { u = new URL(lankar[i].href); } catch (e) { continue; }
+    if (u.hostname === 'app.skattklart.se' ||
+        (u.hostname === location.hostname && u.pathname.indexOf('/demo/') === 0)) {
+      u.searchParams.set('fran', f);
+      lankar[i].href = u.toString();
+    }
+  }
+})();
+</script>
+"""
+
+
+def raknare(standard=""):
+    return RAKNARE.replace("__STANDARD__", standard)
+
+
 def e(t):
     return html.escape(str(t), quote=True)
 
@@ -313,11 +345,11 @@ def sida(m, profiler, fran=None):
 </main>
 <footer>© 2026 Skattklart · hej@skattklart.se ·
   <a href="/integritetspolicy/">Integritetspolicy</a> · <a href="/anvandarvillkor/">Användarvillkor</a></footer>
-</body>
+__RAKNARE__</body>
 </html>
 """ % (' style="padding-top:0"' if tips else "", steg,
        "Fler ingångar" if m else "Vanliga situationer", chips, demo, vantelista))
-    return "".join(delar)
+    return "".join(delar).replace("__RAKNARE__", raknare(fran["slug"] if fran else ""))
 
 
 DEMOSIDA = """<!DOCTYPE html>
@@ -350,7 +382,7 @@ p{color:rgba(255,255,255,.75);margin:20px 0 24px;max-width:360px}
       setTimeout(function () { location.href = a.href; }, 1000);
     })();
   </script>
-</body>
+__RAKNARE__</body>
 </html>
 """
 
@@ -430,7 +462,8 @@ def main():
         skriv("%s/index.html" % m["slug"], sida(m, profiler))
     for k in KALLOR:
         skriv("%s/index.html" % k["slug"], sida(None, profiler, fran=k))
-    skriv("demo/index.html", DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
+    skriv("demo/index.html", (DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
+          .replace("__RAKNARE__", raknare()))
     skriv("404.html", SIDA404 % (IKONLANKAR, CSS, LOGO))
     skriv_ikoner()
     sokvagar = ["/"] + ["/%s/" % m["slug"] for m in MARKNADER] + [
