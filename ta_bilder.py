@@ -5,8 +5,9 @@
     python ta_bilder.py --mork     # även mörkt läge (-mork.webp). Välkomstsidorna visar bara den ljusa
                                    # sedan 2026-10-07 (Boss: "två olika ljus o natt på framsidan").
 
-Demot följer enhetens inställning (prefers-color-scheme, static/theme.js i appen), så
-mörkt läge tas genom att emulera den inställningen FÖRE sidan laddas — ingen knapp trycks.
+Appen är mörk som standard (Boss 2026-10-18: "mörktläge ska vara standard."); ljust är ett
+sparat val. Valet sätts i localStorage innan sidan laddas — ingen knapp trycks. Temarutan
+("Föredrar du ljust läge?") markeras som sedd, så att den inte står i bilden.
 Väntar i riktig tid (dashboardens siffror kommer via ett eget anrop)."""
 import asyncio
 import base64
@@ -47,8 +48,9 @@ async def ta(ws_url, url, mork):
 
         await be("Page.enable")
         await be("Emulation.setDeviceMetricsOverride", width=B, height=H, deviceScaleFactor=SKALA, mobile=False)
-        await be("Emulation.setEmulatedMedia",
-                 features=[{"name": "prefers-color-scheme", "value": "dark" if mork else "light"}])
+        await be("Page.addScriptToEvaluateOnNewDocument", source=(
+            "try{localStorage.setItem('skattklart-tema-tips','1');"
+            + ("" if mork else "localStorage.setItem('skattklart-tema','light');") + "}catch(e){}"))
         await be("Page.navigate", url=url)
         await asyncio.sleep(6)
         tema = (await be("Runtime.evaluate", expression="document.documentElement.getAttribute('data-theme')")
