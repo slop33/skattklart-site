@@ -83,14 +83,15 @@ p{color:rgba(255,255,255,.75);margin:20px 0 24px;max-width:360px}
 <body>
   <a class="logo" href="/" aria-label="Skattklart, startsidan"><span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" aria-hidden="true"><path d="M23 4 L39 10 V23 C39 33 32 40 23 43 C14 40 7 33 7 23 V10 Z" fill="#1a2744"/><path d="M15.5 24 l5.5 5.5 L31.5 18" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Skatt<b>klart</b></span></a>
   <p>Demot öppnas automatiskt — annars tryck på knappen.</p>
-  <a class="knapp" id="go" href="https://app.skattklart.se/demo-login">Öppna demot</a>
+  <a class="knapp" id="go" href="https://app.skattklart.se/demo">Öppna demot</a>
   <p class="liten">Du får ett eget testkonto med färdiga exempel. Inget att registrera, ingenting sparas kopplat till dig.</p>
   <script>
-    // ?exempel=<profil> (från en marknadssida) följer med till demot. Bara kända värden släpps igenom.
+    // Utan ?exempel: appens väljare. ?exempel=<profil> (från en marknadssida) går rakt in i
+    // det exemplet. Bara kända värden släpps igenom.
     (function () {
       var ok = ["anstalld", "creator", "ehandel", "influencer", "investerare", "konsult", "streamer", "uthyrare"], a = document.getElementById('go');
       var ex = new URLSearchParams(location.search).get('exempel');
-      if (ex && ok.indexOf(ex) !== -1) a.href += '?exempel=' + encodeURIComponent(ex);
+      if (ex && ok.indexOf(ex) !== -1) a.href = 'https://app.skattklart.se/demo-login?exempel=' + encodeURIComponent(ex);
       setTimeout(function () { location.href = a.href; }, 1000);
     })();
   </script>

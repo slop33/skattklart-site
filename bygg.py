@@ -35,6 +35,9 @@ APP = "https://app.skattklart.se"
 # (struktur.md §3 p.2) och ska 301:a till app.skattklart.se (omgång 5). Innan dess ska
 # återanropen som pekar på demo-värden kontrolleras eller flyttas: Enable Bankings
 # redirect och, enligt appens LAUNCH.md, Stripes webhook.
+# Utan exempel: appens väljare ("Vilket exempel vill du se?"). Med ett känt exempel
+# (från en marknadssida): rakt in i det exemplet.
+DEMOVAL = APP + "/demo"
 DEMO = APP + "/demo-login"
 # Samma två länkar som appens bas.html (där under /static/icons/). favicon.ico i roten
 # täcker sidorna utan egen <link rel="icon">: guiderna, villkoren och omdirigeringarna,
@@ -374,11 +377,12 @@ p{color:rgba(255,255,255,.75);margin:20px 0 24px;max-width:360px}
   <a class="knapp" id="go" href="%s">Öppna demot</a>
   <p class="liten">Du får ett eget testkonto med färdiga exempel. Inget att registrera, ingenting sparas kopplat till dig.</p>
   <script>
-    // ?exempel=<profil> (från en marknadssida) följer med till demot. Bara kända värden släpps igenom.
+    // Utan ?exempel: appens väljare. ?exempel=<profil> (från en marknadssida) går rakt in i
+    // det exemplet. Bara kända värden släpps igenom.
     (function () {
       var ok = %s, a = document.getElementById('go');
       var ex = new URLSearchParams(location.search).get('exempel');
-      if (ex && ok.indexOf(ex) !== -1) a.href += '?exempel=' + encodeURIComponent(ex);
+      if (ex && ok.indexOf(ex) !== -1) a.href = '%s?exempel=' + encodeURIComponent(ex);
       setTimeout(function () { location.href = a.href; }, 1000);
     })();
   </script>
@@ -462,7 +466,7 @@ def main():
         skriv("%s/index.html" % m["slug"], sida(m, profiler))
     for k in KALLOR:
         skriv("%s/index.html" % k["slug"], sida(None, profiler, fran=k))
-    skriv("demo/index.html", (DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMO, json.dumps(sorted(profiler))))
+    skriv("demo/index.html", (DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMOVAL, json.dumps(sorted(profiler)), DEMO))
           .replace("__RAKNARE__", raknare()))
     skriv("404.html", SIDA404 % (IKONLANKAR, CSS, LOGO))
     skriv_ikoner()
