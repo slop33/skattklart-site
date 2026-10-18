@@ -5,15 +5,28 @@ Boss 2026-10-07: "välkomstsida lite anpassad. Neutral. Influencer, streamer etc
 skattklart.se/twitch etc. för olika marknader" + "Skattklart.se/demo kan vara demo
 adressen. och skattklart.se är bara en 'printscreen' på produkten. 'öppnar snart' ish".
 
-    python bygg.py            # skriver index.html, <marknad>/index.html, demo/, 404, ikonerna, sitemap
+    python bygg.py            # skriver index.html, <marknad>/index.html, <källa>/index.html, 404,
+                              # ikonerna och sitemap-valkomst.xml
 
 EN mall, en post per marknad. Skattetexterna (de tre raderna per marknad) hämtas
 ordagrant ur appens faktagranskade data/profiler.json — ingen skattetext skrivs här.
 Guiderna (skatt-for-*/), villkoren och omdirigeringarna (streamers/, youtubers/ …) rörs inte.
 Källsidorna (twitch/, kick/, youtube/, tiktok/) skrivs härifrån sedan 2026-10-18 — de var
 förut omdirigeringar till streamerguiden.
-Ikonerna (skölden) kopieras ur appens static/icons, så skattklart.se och app.skattklart.se
-har samma favicon. sitemap.xml får <lastmod> ur git (kräver git och Pillow).
+Ikonerna (skölden) kopieras ur appens static/icons, så välkomstsidorna och appen har samma
+favicon. sitemap-valkomst.xml får <lastmod> ur git (kräver git och Pillow).
+
+EN ADRESS (Boss 2026-10-18: "jag ser att det står app.skattklart.se men ska det vara adressen
+när vi lanserar? det ska väl bara vara skattklart.se/vadmanharklickatpå etc. ?", valet "Allt
+på skattklart.se" och "Flytta nu — kör!"): sidorna här och appen ligger på samma värd. Caddy
+på servern serverar en fil härifrån när sökvägen finns som fil eller som katalog med
+index.html, och skickar allt annat till appen (skattklart/deploy/Caddyfile.skattklart).
+Därför länkar sidorna till appen med sökvägar på samma värd (/kom-igang/..., /waitlist,
+/demo, /demo-login?exempel=...), och här får inte finnas någon sökväg som är appens:
+demo/, waitlist/, ordlista/, villkoren och robots.txt är borttagna (arkiv i
+skattklart/docs/arkiv-2026-10-18-adress/). robots.txt, sitemap.xml (ett index) och llms.txt
+ägs av appen; den här filen skriver välkomstsidornas del, sitemap-valkomst.xml.
+Utläggning: skattklart/docs/LANSERING.md, "En adress".
 """
 import datetime
 import html
@@ -30,15 +43,19 @@ APPROT = os.path.join(HAR, "..", "..", "skattklart")
 PROFILER = os.path.join(APPROT, "data", "profiler.json")
 IKONER = os.path.join(APPROT, "static", "icons")
 BAS = "https://skattklart.se"
-APP = "https://app.skattklart.se"
-# Demot startas på appens egen värd. demo.skattklart.se är en tredje värd för samma app
-# (struktur.md §3 p.2) och ska 301:a till app.skattklart.se (omgång 5). Innan dess ska
-# återanropen som pekar på demo-värden kontrolleras eller flyttas: Enable Bankings
-# redirect och, enligt appens LAUNCH.md, Stripes webhook.
-# Utan exempel: appens väljare ("Vilket exempel vill du se?"). Med ett känt exempel
-# (från en marknadssida): rakt in i det exemplet.
-DEMOVAL = APP + "/demo"
-DEMO = APP + "/demo-login"
+# Appens sökvägar på SAMMA värd (En adress, se ovan). Demoknappen: utan exempel appens väljare
+# ("Vilket exempel vill du se?"), med ett exempel (från en marknadssida) rakt in i det.
+# Ett exempel som inte är en demoversion i appen skickar /demo-login själv till väljaren.
+DEMOVAL = "/demo"
+DEMO = "/demo-login"
+KOM_IGANG = "/kom-igang"
+VANTELISTA = "/waitlist"
+# Sökvägar som är appens (tests/app/test_en_adress.py i appen prövar mot Flasks rutter).
+# En fil eller katalog här med något av namnen skulle skugga appen i Caddy — bygget stoppar.
+APPENS = ("demo", "demo-login", "login", "logout", "kom-igang", "waitlist", "dashboard", "api",
+          "static", "admin", "l", "ordlista", "intakter", "villkor", "integritet",
+          "anvandarvillkor", "integritetspolicy", "plattform", "bankid", "bank", "pay",
+          "konto", "declaration", "access", "robots.txt", "sitemap.xml", "llms.txt")
 # Samma två länkar som appens bas.html (där under /static/icons/). favicon.ico i roten
 # täcker sidorna utan egen <link rel="icon">: guiderna, villkoren och omdirigeringarna,
 # som bygg.py inte skriver.
@@ -175,21 +192,22 @@ LOGO = ('<span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" 
 # källa och sida skickas till appens /api/t, som räknar per dag. Källan (?fran= eller
 # källsidans egen) läggs på länkarna till demot, Kom igång och väntelistan, så att de
 # också räknas för den. __STANDARD__ = källsidans slug, annars tomt.
+# En adress (2026-10-18): appen ligger på samma värd — /api/t och appens sökvägar
+# (/kom-igang, /waitlist, /demo, /demo-login) på location.hostname, inte app.skattklart.se.
 RAKNARE = """<script>
 (function () {
   var f = (new URLSearchParams(location.search).get('fran') || '__STANDARD__').toLowerCase();
   if (!/^[a-z0-9-]{1,40}$/.test(f)) f = '';
   try {
-    navigator.sendBeacon('https://app.skattklart.se/api/t',
-                         JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
+    navigator.sendBeacon('/api/t', JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
   } catch (e) {}
   if (!f) return;
   var lankar = document.querySelectorAll('a[href]');
   for (var i = 0; i < lankar.length; i++) {
     var u;
     try { u = new URL(lankar[i].href); } catch (e) { continue; }
-    if (u.hostname === 'app.skattklart.se' ||
-        (u.hostname === location.hostname && u.pathname.indexOf('/demo/') === 0)) {
+    if (u.hostname === location.hostname &&
+        /^[/](kom-igang|waitlist|demo|demo-login)([/]|$)/.test(u.pathname)) {
       u.searchParams.set('fran', f);
       lankar[i].href = u.toString();
     }
@@ -216,7 +234,7 @@ def valblock(fran=None):
     """De två valen + raderna om bara lön och aktiebolag, i toppen av startsidan så att
     första frågan syns utan att scrolla. Valen leder till appens Kom igång-sidor, som
     förklarar stegen för just det valet."""
-    kort = "\n".join('    <a href="%s/kom-igang/%s"><h3>%s</h3><p>%s</p></a>' % (APP, s, e(r), e(t))
+    kort = "\n".join('    <a href="%s/%s"><h3>%s</h3><p>%s</p></a>' % (KOM_IGANG, s, e(r), e(t))
                       for s, r, t in VAL)
     return """  <h2 class="fraga">Vad ska du deklarera?</h2>
   <div class="val">
@@ -239,7 +257,7 @@ def sida(m, profiler, fran=None):
         beskr = ("%s. Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv. "
                  "Öppnar snart — prova demot redan nu." % m["rubrik"])
         etikett, rubrik = m["etikett"], m["rubrik"]
-        demo = "/demo/?exempel=%s" % m["profil"]
+        demo = "%s?exempel=%s" % (DEMO, m["profil"])
         bild, bildalt = "/bilder/produkt-%s.webp" % m["slug"], "Skattklart i demoläge för %s: nästa steg, skatten hittills och avdragstips." % p["namn"].lower()
         valda = m["tips"] or [t["rubrik"] for t in p["tips"][:3]]
         tips = [t for r in valda for t in p["tips"] if t["rubrik"] == r]
@@ -249,7 +267,7 @@ def sida(m, profiler, fran=None):
         beskr = ("Skattklart räknar fram avdragen och gör deklarationen klar att lämna in själv med BankID "
                  "hos Skatteverket. Öppnar snart — prova demot redan nu.")
         etikett, rubrik = "Deklaration för privatpersoner och enskild firma", "Din deklaration klar att lämna in"
-        demo, bild = "/demo/", "/bilder/produkt.webp"
+        demo, bild = DEMOVAL, "/bilder/produkt.webp"
         bildalt = "Skattklart i demoläge: nästa steg, skatten hittills och kommande datum."
         tips = []
     if fran:
@@ -264,7 +282,7 @@ def sida(m, profiler, fran=None):
                "och du med egen firma." if fran else
                "Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och "
                "bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.")
-    vantelista = "%s/waitlist%s" % (APP, ("?fran=" + fran["slug"]) if fran else "")
+    vantelista = "%s%s" % (VANTELISTA, ("?fran=" + fran["slug"]) if fran else "")
     # Källsidorna är varianter av startsidan: kanonisk adress är startsidan.
     kanon = "/" if fran else sokvag
 
@@ -347,7 +365,7 @@ def sida(m, profiler, fran=None):
 </div></section>
 </main>
 <footer>© 2026 Skattklart · hej@skattklart.se ·
-  <a href="/integritetspolicy/">Integritetspolicy</a> · <a href="/anvandarvillkor/">Användarvillkor</a></footer>
+  <a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></footer>
 __RAKNARE__</body>
 </html>
 """ % (' style="padding-top:0"' if tips else "", steg,
@@ -355,40 +373,8 @@ __RAKNARE__</body>
     return "".join(delar).replace("__RAKNARE__", raknare(fran["slug"] if fran else ""))
 
 
-DEMOSIDA = """<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Skattklart — demo</title>
-<meta name="description" content="Prova Skattklart med färdiga exempel. Gratis, inget konto.">
-<link rel="canonical" href="%s/demo/">
-%s
-<style>%s
-body{background:var(--navy);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-padding:24px;text-align:center}
-p{color:rgba(255,255,255,.75);margin:20px 0 24px;max-width:360px}
-.liten{font-size:13px;color:rgba(255,255,255,.5)}
-</style>
-</head>
-<body>
-  <a class="logo" href="/" aria-label="Skattklart, startsidan">%s<span>Skatt<b>klart</b></span></a>
-  <p>Demot öppnas automatiskt — annars tryck på knappen.</p>
-  <a class="knapp" id="go" href="%s">Öppna demot</a>
-  <p class="liten">Du får ett eget testkonto med färdiga exempel. Inget att registrera, ingenting sparas kopplat till dig.</p>
-  <script>
-    // Utan ?exempel: appens väljare. ?exempel=<profil> (från en marknadssida) går rakt in i
-    // det exemplet. Bara kända värden släpps igenom.
-    (function () {
-      var ok = %s, a = document.getElementById('go');
-      var ex = new URLSearchParams(location.search).get('exempel');
-      if (ex && ok.indexOf(ex) !== -1) a.href = '%s?exempel=' + encodeURIComponent(ex);
-      setTimeout(function () { location.href = a.href; }, 1000);
-    })();
-  </script>
-__RAKNARE__</body>
-</html>
-"""
+# Den egna demosidan (demo/) är borttagen sedan En adress (2026-10-18): /demo är appens
+# väljare på samma värd, och en fil här skulle skugga den.
 
 SIDA404 = """<!DOCTYPE html>
 <html lang="sv">
@@ -466,24 +452,32 @@ def main():
         skriv("%s/index.html" % m["slug"], sida(m, profiler))
     for k in KALLOR:
         skriv("%s/index.html" % k["slug"], sida(None, profiler, fran=k))
-    skriv("demo/index.html", (DEMOSIDA % (BAS, IKONLANKAR, CSS, LOGO, DEMOVAL, json.dumps(sorted(profiler)), DEMO))
-          .replace("__RAKNARE__", raknare()))
     skriv("404.html", SIDA404 % (IKONLANKAR, CSS, LOGO))
     skriv_ikoner()
+    # Välkomstsidornas del av sitemapen. Appens sitemap.xml är ett index som pekar hit och på
+    # appens egen del; villkoren (/villkor, /integritet) står där. Startsidan står alltid här.
     sokvagar = ["/"] + ["/%s/" % m["slug"] for m in MARKNADER] + [
-        "/skatt-for-streamers/", "/skatt-for-youtubers/", "/skatt-for-influencers/",
-        "/integritetspolicy/", "/anvandarvillkor/"]
-    skriv("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
+        "/skatt-for-streamers/", "/skatt-for-youtubers/", "/skatt-for-influencers/"]
+    skriv("sitemap-valkomst.xml", '<?xml version="1.0" encoding="UTF-8"?>\n'
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
           + "".join("  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n"
                     % (BAS, s, lastmod(s.lstrip("/") + "index.html")) for s in sokvagar)
           + "</urlset>\n")
     # Självkontroll: giltig XML, en rad per sökväg och ett datum på varje rad.
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-    rader = ET.parse(os.path.join(HAR, "sitemap.xml")).getroot().findall("s:url", ns)
+    rader = ET.parse(os.path.join(HAR, "sitemap-valkomst.xml")).getroot().findall("s:url", ns)
     datum = [r.findtext("s:lastmod", namespaces=ns) or "" for r in rader]
     if len(rader) != len(sokvagar) or not all(re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) for d in datum):
-        raise SystemExit("bygg.py: sitemap.xml blev fel: %d rader, lastmod %s" % (len(rader), datum))
+        raise SystemExit("bygg.py: sitemap-valkomst.xml blev fel: %d rader, lastmod %s" % (len(rader), datum))
+    # En adress: ingen fil eller katalog här får ha en av appens sökvägar (Caddy skuggar då appen).
+    krockar = [n for n in APPENS if os.path.exists(os.path.join(HAR, n))]
+    if krockar:
+        raise SystemExit("bygg.py: %s finns här men är appens sökväg (En adress) — flytta bort" % krockar)
+    # Inga länkar till de gamla värdarna (app./demo.skattklart.se 301:ar till skattklart.se).
+    for rel in ["index.html", "404.html"] + ["%s/index.html" % x["slug"] for x in MARKNADER + KALLOR]:
+        with io.open(os.path.join(HAR, rel), encoding="utf-8") as f:
+            if re.search(r"(app|demo)\.skattklart\.se", f.read()):
+                raise SystemExit("bygg.py: %s länkar till app./demo.skattklart.se" % rel)
 
 
 if __name__ == "__main__":

@@ -92,8 +92,8 @@ padding:20px 22px;text-decoration:none}
   <h1>Deklarationen för dig som hyr ut <span>— med avdragen du annars missar.</span></h1>
   <p class="ingress">Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.</p>
   <div class="knappar">
-    <a class="knapp" href="/demo/?exempel=uthyrare">Prova demot</a>
-    <a class="lank" href="https://app.skattklart.se/waitlist">Få besked när vi öppnar</a>
+    <a class="knapp" href="/demo-login?exempel=uthyrare">Prova demot</a>
+    <a class="lank" href="/waitlist">Få besked när vi öppnar</a>
   </div>
   <p class="not">Demot är gratis och kräver inget konto.</p>
   <div class="bild"><img src="/bilder/produkt-uthyrning.webp" width="1600" height="1000" alt="Skattklart i demoläge för uthyrare: nästa steg, skatten hittills och avdragstips."></div>
@@ -132,28 +132,27 @@ padding:20px 22px;text-decoration:none}
   <h2>Se hur det ser ut</h2>
   <p>Demot har färdiga exempel. Inget sparas kopplat till dig.</p>
   <div class="knappar">
-    <a class="knapp" href="/demo/?exempel=uthyrare">Prova demot</a>
-    <a class="lank" href="https://app.skattklart.se/waitlist">Få besked när vi öppnar</a>
+    <a class="knapp" href="/demo-login?exempel=uthyrare">Prova demot</a>
+    <a class="lank" href="/waitlist">Få besked när vi öppnar</a>
   </div>
 </div></section>
 </main>
 <footer>© 2026 Skattklart · hej@skattklart.se ·
-  <a href="/integritetspolicy/">Integritetspolicy</a> · <a href="/anvandarvillkor/">Användarvillkor</a></footer>
+  <a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></footer>
 <script>
 (function () {
   var f = (new URLSearchParams(location.search).get('fran') || '').toLowerCase();
   if (!/^[a-z0-9-]{1,40}$/.test(f)) f = '';
   try {
-    navigator.sendBeacon('https://app.skattklart.se/api/t',
-                         JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
+    navigator.sendBeacon('/api/t', JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
   } catch (e) {}
   if (!f) return;
   var lankar = document.querySelectorAll('a[href]');
   for (var i = 0; i < lankar.length; i++) {
     var u;
     try { u = new URL(lankar[i].href); } catch (e) { continue; }
-    if (u.hostname === 'app.skattklart.se' ||
-        (u.hostname === location.hostname && u.pathname.indexOf('/demo/') === 0)) {
+    if (u.hostname === location.hostname &&
+        /^[/](kom-igang|waitlist|demo|demo-login)([/]|$)/.test(u.pathname)) {
       u.searchParams.set('fran', f);
       lankar[i].href = u.toString();
     }

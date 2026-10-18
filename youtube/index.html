@@ -93,15 +93,15 @@ padding:20px 22px;text-decoration:none}
   <p class="ingress">De flesta som klickar hit från en stream eller en video ska bara deklarera som vanligt. Skattklart hjälper alla: du med lön och lite vid sidan av, du som sålt aktier eller hyr ut, och du med egen firma.</p>
   <h2 class="fraga">Vad ska du deklarera?</h2>
   <div class="val">
-    <a href="https://app.skattklart.se/kom-igang/privat"><h3>Privatperson</h3><p>Lön och något mer: sålt aktier, krypto eller bostad, hyr ut eller har sidoinkomster.</p></a>
-    <a href="https://app.skattklart.se/kom-igang/firma"><h3>Enskild firma</h3><p>Du har en egen firma, till exempel som hantverkare, konsult eller streamer.</p></a>
+    <a href="/kom-igang/privat"><h3>Privatperson</h3><p>Lön och något mer: sålt aktier, krypto eller bostad, hyr ut eller har sidoinkomster.</p></a>
+    <a href="/kom-igang/firma"><h3>Enskild firma</h3><p>Du har en egen firma, till exempel som hantverkare, konsult eller streamer.</p></a>
   </div>
   <p class="sma">Bara lön? Då räcker ofta Skatteverkets förifyllda deklaration.</p>
   <p class="sma">Har du aktiebolag? Det kommer senare. Din egen privata deklaration kan du göra redan nu.</p>
   <p class="sma">Gör du video själv? <a href="/youtuber/">Det här gäller för dig</a></p>
   <div class="knappar">
-    <a class="knapp" href="/demo/">Prova demot</a>
-    <a class="lank" href="https://app.skattklart.se/waitlist?fran=youtube">Få besked när vi öppnar</a>
+    <a class="knapp" href="/demo">Prova demot</a>
+    <a class="lank" href="/waitlist?fran=youtube">Få besked när vi öppnar</a>
   </div>
   <p class="not">Demot är gratis och kräver inget konto.</p>
   <div class="bild"><img src="/bilder/produkt.webp" width="1600" height="1000" alt="Skattklart i demoläge: nästa steg, skatten hittills och kommande datum."></div>
@@ -132,28 +132,27 @@ padding:20px 22px;text-decoration:none}
   <h2>Se hur det ser ut</h2>
   <p>Demot har färdiga exempel. Inget sparas kopplat till dig.</p>
   <div class="knappar">
-    <a class="knapp" href="/demo/">Prova demot</a>
-    <a class="lank" href="https://app.skattklart.se/waitlist?fran=youtube">Få besked när vi öppnar</a>
+    <a class="knapp" href="/demo">Prova demot</a>
+    <a class="lank" href="/waitlist?fran=youtube">Få besked när vi öppnar</a>
   </div>
 </div></section>
 </main>
 <footer>© 2026 Skattklart · hej@skattklart.se ·
-  <a href="/integritetspolicy/">Integritetspolicy</a> · <a href="/anvandarvillkor/">Användarvillkor</a></footer>
+  <a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></footer>
 <script>
 (function () {
   var f = (new URLSearchParams(location.search).get('fran') || 'youtube').toLowerCase();
   if (!/^[a-z0-9-]{1,40}$/.test(f)) f = '';
   try {
-    navigator.sendBeacon('https://app.skattklart.se/api/t',
-                         JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
+    navigator.sendBeacon('/api/t', JSON.stringify({fran: f || 'direkt', sida: location.pathname}));
   } catch (e) {}
   if (!f) return;
   var lankar = document.querySelectorAll('a[href]');
   for (var i = 0; i < lankar.length; i++) {
     var u;
     try { u = new URL(lankar[i].href); } catch (e) { continue; }
-    if (u.hostname === 'app.skattklart.se' ||
-        (u.hostname === location.hostname && u.pathname.indexOf('/demo/') === 0)) {
+    if (u.hostname === location.hostname &&
+        /^[/](kom-igang|waitlist|demo|demo-login)([/]|$)/.test(u.pathname)) {
       u.searchParams.set('fran', f);
       lankar[i].href = u.toString();
     }
