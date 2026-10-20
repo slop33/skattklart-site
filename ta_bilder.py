@@ -32,6 +32,9 @@ PORT = 9341
 #     set SKATTKLART_BILDBAS=http://127.0.0.1:5050
 DEMO = os.environ.get("SKATTKLART_BILDBAS", "https://demo.skattklart.se").rstrip("/") + "/demo-login?exempel=%s"
 B, H, SKALA = 1280, 800, 1.25
+# Profiler utan egen demoversion i appen (demo_login skickar dem till väljaren /demo): bilden tas
+# på närmaste version. E-handel = enskild firma med moms, som konsulten.
+BILDPROFIL = {"ehandel": "konsult"}
 
 
 async def ta(ws_url, url, mork):
@@ -48,9 +51,11 @@ async def ta(ws_url, url, mork):
 
         await be("Page.enable")
         await be("Emulation.setDeviceMetricsOverride", width=B, height=H, deviceScaleFactor=SKALA, mobile=False)
+        # Valet skrivs ALLTID ut: profilmappen delas av alla bilder i en körning, så ett sparat
+        # 'light' från förra bilden låg annars kvar i den mörka (2026-10-20).
         await be("Page.addScriptToEvaluateOnNewDocument", source=(
             "try{localStorage.setItem('skattklart-tema-tips','1');"
-            + ("" if mork else "localStorage.setItem('skattklart-tema','light');") + "}catch(e){}"))
+            "localStorage.setItem('skattklart-tema','%s');}catch(e){}" % ("dark" if mork else "light")))
         await be("Page.navigate", url=url)
         await asyncio.sleep(6)
         tema = (await be("Runtime.evaluate", expression="document.documentElement.getAttribute('data-theme')")
@@ -79,7 +84,7 @@ def en_bild(slug, profil, mork):
         else:
             raise RuntimeError("chrome svarade inte på felsökningsporten")
         mal = next(t for t in flikar if t.get("type") == "page")
-        tema, png = asyncio.run(ta(mal["webSocketDebuggerUrl"], DEMO % profil, mork))
+        tema, png = asyncio.run(ta(mal["webSocketDebuggerUrl"], DEMO % BILDPROFIL.get(profil, profil), mork))
     finally:
         subprocess.run(["taskkill", "/F", "/T", "/PID", str(p.pid)], capture_output=True)
         # Vänta in processen: utan wait() varnar Python "subprocess ... is still running"
