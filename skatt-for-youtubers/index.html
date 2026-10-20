@@ -26,22 +26,34 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { overflow-x:hidden; }
   body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-         color:var(--ink); background:#fff; line-height:1.65; }
-  a { color:var(--gold2); }
-  nav { background:var(--navy); height:60px; display:flex; align-items:center;
-        justify-content:space-between; padding:0 24px; }
-  .logo { display:inline-flex; align-items:center; gap:9px; text-decoration:none; }
-  .logo-mark { width:28px; height:28px; background:var(--gold); color:var(--navy); border-radius:7px;
-               display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; }
-  .logo-word { color:#fff; font-weight:800; font-size:19px; letter-spacing:-.5px; }
-  .nav-cta { background:var(--gold); color:var(--navy); font-weight:700; font-size:13px;
-             padding:9px 18px; border-radius:7px; text-decoration:none; }
+         color:var(--ink); background:#f1f3f8; line-height:1.65; }
+  a { color:#8a5c00; }  /* mörkare guld: 5,8:1 på vitt, 5,2:1 på #f1f3f8 (2026-10-20) */
+  /* Sidhuvud och sidfot = välkomstsidornas, CSS:en kopierad ur bygg.py 2026-10-20 (V1, V5).
+     Måtten = appens sidhuvud (V2). Typsnitt och radhöjd som på välkomstsidorna. */
+  :root { --sidmarg:16px; --bredd:1080px; }
+  @media (min-width:768px){:root{--sidmarg:24px}}
+  @media (min-width:1024px){:root{--sidmarg:32px}}
+  @media (min-width:1280px){:root{--bredd:1200px}}
+  @media (min-width:1440px){:root{--bredd:1360px}}
+  .topp, footer { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.55; }
+  .topp{background:var(--navy);color:#fff}
+  .topp a{color:inherit}
+  .inre{max-width:1120px;margin:0 auto;padding:0 20px}
+  .topp .inre{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px;max-width:none;
+  padding:0 max(var(--sidmarg),calc((100% - var(--bredd)) / 2))}
+  .logo{display:inline-flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;font-weight:700;font-size:18px;
+  letter-spacing:-.02em;line-height:1;white-space:nowrap}
+  .logo-m{width:34px;height:34px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0}
+  .logo b{color:var(--gold);font-weight:700}
+  .snart{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);
+  background:var(--gold);padding:6px 12px;border-radius:999px;white-space:nowrap}
   .hero { background:linear-gradient(160deg,var(--navy),var(--navy2) 60%,var(--navy));
           color:#fff; padding:64px 24px 56px; text-align:center; }
   .hero .kicker { display:inline-block; background:rgba(255,0,51,.18); color:#ff98ab;
                   font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
                   padding:6px 16px; border-radius:20px; margin-bottom:20px; }
-  .hero h1 { font-size:clamp(28px,5vw,42px); line-height:1.2; max-width:720px; margin:0 auto 16px; }
+  .hero h1 { font-size:clamp(28px,5vw,42px); line-height:1.2; max-width:720px; margin:0 auto 16px; text-wrap:balance; }
   .hero p { color:rgba(255,255,255,.7); font-size:18px; max-width:560px; margin:0 auto 28px; }
   .hero .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:800;
                font-size:16px; padding:15px 30px; border-radius:9px; text-decoration:none; }
@@ -77,16 +89,26 @@
   .platformbar a { font-size:14px; font-weight:600; text-decoration:none; color:var(--navy);
                    background:#f6f8fc; border:1px solid var(--line); border-radius:20px; padding:6px 14px; }
   .platformbar a.active { background:var(--navy); color:#fff; border-color:var(--navy); }
-  footer { border-top:1px solid var(--line); padding:32px 24px; text-align:center; color:#99a; font-size:13px; }
-  .disclaimer { max-width:640px; margin:0 auto 10px; }
-  @media(max-width:600px){ nav{padding:0 14px} main{padding:36px 16px} .hero{padding:48px 16px 40px} }
+  /* Sidfoten: välkomstsidornas. Luft ovanför texten här, där välkomstsidorna har avslutsrutan. */
+  footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:28px 20px}
+  footer a{color:rgba(255,255,255,.75)}
+  /* Tryckytan 44 px som appens --tryckyta; den negativa marginalen håller raden där den var (V8). */
+  footer a{display:inline-block;padding-block:12px;margin-block:-12px}
+  /* Sidfoten bryts mellan grupperna, aldrig efter en avgränsare (V7). */
+  .fotdel{white-space:nowrap}
+  /* Appens mobilbrytpunkt för sidhuvudet (casters.css @media max-width:600px). */
+  @media (max-width:600px){.logo{font-size:16px}.logo-m{width:30px;height:30px;border-radius:9px}
+  .fotskilje{display:none}.fotdel{display:block}}
+  /* Ansvarsfriskrivningen står ovanför sidfoten (förut i den). Samma textbredd och storlek som förut. */
+  .disclaimer { max-width:688px; margin:0 auto; padding:0 24px 32px; font-size:13px; text-align:center; }
+  @media(max-width:600px){ main{padding:36px 16px} .hero{padding:48px 16px 40px} }
 </style>
 </head>
 <body>
-<nav>
-  <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 46 46" width="72%" height="72%" style="display:block" aria-label="Skattklart"><path d="M23 4 L39 10 V23 C39 33 32 40 23 43 C14 40 7 33 7 23 V10 Z" fill="#1a2744"/><path d="M15.5 24 l5.5 5.5 L31.5 18" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="logo-word">Skatt<span style="color:var(--gold)">klart</span></span></a>
-  <a class="nav-cta" href="/demo">Prova demot →</a>
-</nav>
+<header class="topp"><div class="inre">
+  <a class="logo" href="/" aria-label="Skattklart, startsidan"><span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" aria-hidden="true"><path d="M23 4 L39 10 V23 C39 33 32 40 23 43 C14 40 7 33 7 23 V10 Z" fill="#1a2744"/><path d="M15.5 24 l5.5 5.5 L31.5 18" fill="none" stroke="#f0b429" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Skatt<b>klart</b></span></a>
+  <span class="snart">Öppnar snart</span>
+</div></header>
 
 <header class="hero">
   <div class="kicker">▶ Guide för YouTubers</div>
@@ -201,11 +223,10 @@
   </div>
 </main>
 
-<footer>
-  <p class="disclaimer">Allmän information, inte individuell skatterådgivning. Reglerna kan ändras
+<p class="disclaimer">Allmän information, inte individuell skatterådgivning. Reglerna kan ändras
      och din situation kan skilja sig — vid tveksamhet, kontakta Skatteverket eller en auktoriserad
      redovisningskonsult.</p>
-  <p>© 2026 Skattklart · <a href="/">skattklart.se</a> · <a href="/ordlista">Ordlista</a></p>
-</footer>
+
+<footer><span class="fotdel">© 2026 Skattklart · hej@skattklart.se</span><span class="fotskilje"> · </span><span class="fotdel"><a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></span></footer>
 </body>
 </html>

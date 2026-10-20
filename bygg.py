@@ -117,18 +117,27 @@ STEG = [
 
 CSS = """
 :root{--navy:#1a2744;--navy2:#243460;--gold:#f0b429;--gold2:#d99a10;--bg:#f1f3f8;--panel:#fff;
---ink:#1a2744;--dim:#4d5b78;--line:#d8deea}
+--ink:#1a2744;--dim:#4d5b78;--line:#d8deea;--sidmarg:16px;--bredd:1080px}
+/* Sidhuvudet har appens mått: --sidmarg/--bredd = casters.css --sidmarginal/--bredd-max, inpassningen
+   = publik.css .pubnav, höjd/märke/ordmärke = casters.css avsnitt 4-5 (V2, 2026-10-20). */
+@media (min-width:768px){:root{--sidmarg:24px}}
+@media (min-width:1024px){:root{--sidmarg:32px}}
+@media (min-width:1280px){:root{--bredd:1200px}}
+@media (min-width:1440px){:root{--bredd:1360px}}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden}
 a{color:inherit}
 .topp{background:var(--navy);color:#fff}
-.inre{max-width:1120px;margin:0 auto;padding:0 20px}
-.topp .inre{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
-.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-size:21px;letter-spacing:-.3px}
-.logo-m{width:36px;height:36px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center}
-.logo b{color:var(--gold);font-weight:800}
+.inre{max-width:none;margin:0;padding:0 max(var(--sidmarg),calc((100% - var(--bredd)) / 2))}  /* samma spalt som sidhuvudet och appen: loggan och innehållet linjerar (2026-10-20) */
+.topp .inre{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px;max-width:none;
+padding:0 max(var(--sidmarg),calc((100% - var(--bredd)) / 2))}
+.logo{display:inline-flex;align-items:center;gap:11px;min-height:44px;text-decoration:none;font-weight:700;font-size:18px;
+letter-spacing:-.02em;line-height:1;white-space:nowrap}
+.logo-m{width:34px;height:34px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;
+flex-shrink:0}
+.logo b{color:var(--gold);font-weight:700}
 .snart{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--navy);
 background:var(--gold);padding:6px 12px;border-radius:999px;white-space:nowrap}
 .hjalte{background:linear-gradient(180deg,var(--navy) 0,var(--navy2) 100%);color:#fff;padding:44px 0 0}
@@ -166,6 +175,10 @@ border:1px solid var(--line);font-size:15px;font-weight:600;text-decoration:none
 .avslut .knappar{justify-content:center;margin-top:0}
 footer{background:var(--navy);color:rgba(255,255,255,.55);font-size:13px;text-align:center;padding:0 20px 28px}
 footer a{color:rgba(255,255,255,.75)}
+/* Tryckytan 44 px som appens --tryckyta; den negativa marginalen håller raden där den var (V8). */
+footer a,.kalla a{display:inline-block;padding-block:12px;margin-block:-12px}
+/* Sidfoten bryts mellan grupperna, aldrig efter en avgränsare (V7). */
+.fotdel{white-space:nowrap}
 .val{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .val a{display:block;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:14px;
 padding:20px 22px;text-decoration:none}
@@ -180,6 +193,9 @@ padding:20px 22px;text-decoration:none}
 .sma a{font-weight:600}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 @media (max-width:560px){.hjalte{padding-top:30px}.ingress{font-size:16px}.knapp{width:100%;justify-content:center}section{padding:34px 0}}
+/* Appens mobilbrytpunkt för sidhuvudet (casters.css @media max-width:600px). */
+@media (max-width:600px){.logo{font-size:16px}.logo-m{width:30px;height:30px;border-radius:9px}
+.fotskilje{display:none}.fotdel{display:block}}
 """
 
 LOGO = ('<span class="logo-m"><svg viewBox="0 0 46 46" width="72%" height="72%" aria-hidden="true">'
@@ -283,6 +299,8 @@ def sida(m, profiler, fran=None):
                "Du svarar på frågor om året och laddar upp kvitton. Skattklart räknar och ger dig rutorna och "
                "bilagorna till deklarationen. Du lämnar in själv med BankID hos Skatteverket.")
     vantelista = "%s%s" % (VANTELISTA, ("?fran=" + fran["slug"]) if fran else "")
+    # Telefonens bild (V10, 2026-10-20): samma vy tagen i 390 px bredd, så att texten går att läsa.
+    bild_mobil = bild.replace(".webp", "-mobil.webp")
     # Källsidorna är varianter av startsidan: kanonisk adress är startsidan.
     kanon = "/" if fran else sokvag
 
@@ -319,12 +337,12 @@ def sida(m, profiler, fran=None):
     <a class="lank" href="%s">Få besked när vi öppnar</a>
   </div>
   <p class="not">Demot är gratis och kräver inget konto.</p>
-  <div class="bild"><img src="%s" width="1600" height="1000" alt="%s"></div>
+  <div class="bild"><picture><source media="(max-width: 600px)" srcset="%s" width="780" height="1440"><img src="%s" width="1600" height="1000" alt="%s"></picture></div>
 </div></div>
 <p class="bildtext">Bilden visar demot med exempeldata.</p>
 """ % (e(titel), e(beskr), BAS, kanon, e(titel), e(beskr), BAS, sokvag, BAS, bild, IKONLANKAR, CSS, LOGO,
        e(etikett), e(rubrik), "" if fran else " <span>— med avdragen du annars missar.</span>", e(ingress),
-       "" if m else valblock(fran), demo, vantelista, bild, e(bildalt)))
+       "" if m else valblock(fran), demo, vantelista, bild_mobil, bild, e(bildalt)))
 
     if tips:
         kort = "\n".join('    <div class="kort"><h3>%s</h3><p>%s</p></div>' % (e(t["rubrik"]), e(t["text"]))
@@ -364,8 +382,7 @@ def sida(m, profiler, fran=None):
   </div>
 </div></section>
 </main>
-<footer>© 2026 Skattklart · hej@skattklart.se ·
-  <a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></footer>
+<footer><span class="fotdel">© 2026 Skattklart · hej@skattklart.se</span><span class="fotskilje"> · </span><span class="fotdel"><a href="/integritet">Integritetspolicy</a> · <a href="/villkor">Användarvillkor</a></span></footer>
 __RAKNARE__</body>
 </html>
 """ % (' style="padding-top:0"' if tips else "", steg,
@@ -446,6 +463,11 @@ def lastmod(rel):
 
 
 def main():
+    # Mobilbilderna (<picture>, V10) måste finnas — annars får telefonen en trasig bild.
+    saknas = [b for b in ["produkt-mobil.webp"] + ["produkt-%s-mobil.webp" % x["slug"] for x in MARKNADER]
+              if not os.path.isfile(os.path.join(HAR, "bilder", b))]
+    if saknas:
+        raise SystemExit("bygg.py: mobilbilder saknas i bilder/: %s — kör ta_bilder.py" % saknas)
     profiler = las_profiler()
     skriv("index.html", sida(None, profiler))
     for m in MARKNADER:
