@@ -61,6 +61,24 @@ APPENS = ("demo", "demo-login", "login", "logout", "kom-igang", "waitlist", "das
 # som bygg.py inte skriver.
 IKONLANKAR = ('<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">\n'
               '<link rel="apple-touch-icon" href="/apple-touch-icon.png">')
+# Delningsbilden: samma 1200x630-bild som appens sidor (templates/bas.html OG_BILD, ritad av
+# skattklart/tools/bygg_ogbild.py; texten är startsidans h1). Förut var og:image produktbilden
+# (1600x1000 webp) och twitter:card saknades — länken delades utan stort kort (checklistan 2026-10-21).
+OG_BILD = BAS + "/static/og-skattklart.png"
+OG_BILD_ALT = "Skattklart: Din deklaration klar att lämna in — med avdragen du annars missar."
+
+
+def delningstaggar(titel, beskr, url, typ="website"):
+    """og:* och twitter:* — samma uppsättning som appens bas.html."""
+    rader = [("property", "og:type", typ), ("property", "og:site_name", "Skattklart"),
+             ("property", "og:locale", "sv_SE"), ("property", "og:title", titel),
+             ("property", "og:description", beskr), ("property", "og:url", url),
+             ("property", "og:image", OG_BILD), ("property", "og:image:type", "image/png"),
+             ("property", "og:image:width", "1200"), ("property", "og:image:height", "630"),
+             ("property", "og:image:alt", OG_BILD_ALT), ("name", "twitter:card", "summary_large_image"),
+             ("name", "twitter:title", titel), ("name", "twitter:description", beskr),
+             ("name", "twitter:image", OG_BILD), ("name", "twitter:image:alt", OG_BILD_ALT)]
+    return "\n".join('<meta %s="%s" content="%s">' % (a, n, e(v)) for a, n, v in rader)
 
 # slug = adressen. profil = slug i appens profiler.json (styr demots exempel och tipsen).
 # Ordningen = ordningen bland "Vanliga situationer": de vanligaste först. Boss 2026-10-18:
@@ -288,7 +306,7 @@ def sida(m, profiler, fran=None):
         tips = []
     if fran:
         sokvag = "/%s/" % fran["slug"]
-        titel = "Skattklart — deklarationen för alla. Öppnar snart"
+        titel = "Från %s? Skattklart — deklarationen för alla. Öppnar snart" % fran["namn"]
         beskr = ("Kom du hit från %s? Skattklart hjälper alla som ska deklarera, inte bara den som %s. "
                  "Öppnar snart — prova demot redan nu." % (fran["namn"], fran["gor"]))
         etikett = "Kom du hit från %s?" % fran["namn"]
@@ -313,11 +331,7 @@ def sida(m, profiler, fran=None):
 <title>%s</title>
 <meta name="description" content="%s">
 <link rel="canonical" href="%s%s">
-<meta property="og:type" content="website">
-<meta property="og:title" content="%s">
-<meta property="og:description" content="%s">
-<meta property="og:url" content="%s%s">
-<meta property="og:image" content="%s%s">
+%s
 <meta name="theme-color" content="#1a2744">
 %s
 <style>%s</style>
@@ -340,7 +354,7 @@ def sida(m, profiler, fran=None):
   <div class="bild"><picture><source media="(max-width: 600px)" srcset="%s" width="780" height="1440"><img src="%s" width="1600" height="1000" alt="%s"></picture></div>
 </div></div>
 <p class="bildtext">Bilden visar demot med exempeldata.</p>
-""" % (e(titel), e(beskr), BAS, kanon, e(titel), e(beskr), BAS, sokvag, BAS, bild, IKONLANKAR, CSS, LOGO,
+""" % (e(titel), e(beskr), BAS, kanon, delningstaggar(titel, beskr, BAS + sokvag), IKONLANKAR, CSS, LOGO,
        e(etikett), e(rubrik), "" if fran else " <span>— med avdragen du annars missar.</span>", e(ingress),
        "" if m else valblock(fran), demo, vantelista, bild_mobil, bild, e(bildalt)))
 
@@ -404,13 +418,19 @@ SIDA404 = """<!DOCTYPE html>
 <style>%s
 body{background:var(--navy);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
 padding:24px;text-align:center}
-p{color:rgba(255,255,255,.75);margin:20px 0 24px}
+h1{font-size:clamp(28px,6vw,40px);margin:28px 0 0}
+p{color:rgba(255,255,255,.75);margin:12px 0 0;max-width:520px}
+.knappar{justify-content:center}
 </style>
 </head>
 <body>
   <a class="logo" href="/" aria-label="Skattklart, startsidan">%s<span>Skatt<b>klart</b></span></a>
-  <p>Den här sidan finns inte.</p>
-  <a class="knapp" href="/">Till startsidan</a>
+  <h1>Sidan finns inte</h1>
+  <p>Vi hittar ingen sida på den adressen. Det brukar bero på en felstavad länk eller ett gammalt bokmärke.</p>
+  <div class="knappar">
+    <a class="knapp" href="/">Till startsidan</a>
+    <a class="lank" href="/demo">Prova demot</a>
+  </div>
 </body>
 </html>
 """
